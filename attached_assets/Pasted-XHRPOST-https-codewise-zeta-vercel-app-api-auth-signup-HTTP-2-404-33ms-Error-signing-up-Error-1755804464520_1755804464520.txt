@@ -1,0 +1,36 @@
+XHRPOST
+https://codewise-zeta.vercel.app/api/auth/signup
+[HTTP/2 404  33ms]
+
+Error signing up: Error: Server error (404)
+    signUp https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:40
+    d https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:40
+    rt https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:120
+    Nb https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    Tb https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    Ub https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    nf https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    se$1 https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    hd https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    Qk https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:40
+    Jb https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    hd https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    fd https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    ed https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+index-BRpbaB5x.js:40:60014
+Auth error: Error: Server error (404)
+    signUp https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:40
+    d https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:40
+    rt https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:120
+    Nb https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    Tb https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    Ub https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    nf https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    se$1 https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    hd https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    Qk https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:40
+    Jb https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    hd https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    fd https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+    ed https://codewise-zeta.vercel.app/assets/index-BRpbaB5x.js:37
+index-BRpbaB5x.js:120:78470
