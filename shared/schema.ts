@@ -39,6 +39,7 @@ export const schools = pgTable("schools", {
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   email: text("email").notNull().unique(),
+  username: text("username").unique(), // for children created by parents
   passwordHash: text("password_hash"),
   name: text("name").notNull(),
   role: text("role").notNull(), // 'student', 'teacher', 'parent', 'school_admin'
@@ -54,7 +55,7 @@ export const users = pgTable("users", {
   schoolId: varchar("school_id").references(() => schools.id),
   
   // Parent-child relationship
-  parentUserId: varchar("parent_user_id"), // references users.id for parent linking
+  parentId: varchar("parent_id"), // references users.id for parent linking
   
   // Additional info
   grade: text("grade"), // for students
