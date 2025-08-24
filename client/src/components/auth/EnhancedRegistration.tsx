@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { RoleSelection } from "./RoleSelection";
 import { PackageSelection } from "./PackageSelection";
-import { ParentChildLinking } from "./ParentChildLinking";
+import { CreateChildAccounts } from "./CreateChildAccounts";
 
 interface EnhancedRegistrationProps {
   onRegistrationComplete: (userData: {
@@ -64,7 +64,7 @@ export function EnhancedRegistration({ onRegistrationComplete }: EnhancedRegistr
           ? "Select School Package" 
           : "Choose Your Package";
       case 3:
-        return "Link Child Accounts";
+        return "Create Child Accounts";
       default:
         return "Registration";
     }
@@ -79,7 +79,7 @@ export function EnhancedRegistration({ onRegistrationComplete }: EnhancedRegistr
           ? "Select a package that fits your institution's needs"
           : "Choose the learning package that's right for you";
       case 3:
-        return "Connect to your child's existing account to monitor their progress";
+        return "Create learning accounts for your children with usernames and age groups";
       default:
         return "";
     }
@@ -130,9 +130,9 @@ export function EnhancedRegistration({ onRegistrationComplete }: EnhancedRegistr
         )}
 
         {currentStep === 3 && registrationData.role === 'parent' && (
-          <ParentChildLinking
+          <CreateChildAccounts
             parentUserId="temp-parent-id" // This would be the actual parent user ID
-            onLinkingComplete={handleParentLinkingComplete}
+            onComplete={handleParentLinkingComplete}
           />
         )}
       </div>
@@ -147,7 +147,7 @@ export function EnhancedRegistration({ onRegistrationComplete }: EnhancedRegistr
                   "Perfect! You'll get access to age-appropriate coding lessons and interactive projects."
                 }
                 {registrationData.role === 'parent' && 
-                  "Great choice! You'll be able to monitor your child's learning progress and achievements."
+                  "Great choice! You'll create accounts for your children and monitor their learning progress and achievements."
                 }
                 {registrationData.role === 'teacher' && 
                   "Excellent! You'll have access to course creation tools and student management features."
