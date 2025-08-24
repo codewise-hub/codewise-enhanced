@@ -42,10 +42,10 @@ export function AuthModal({ isOpen, mode: initialMode, initialRole, initialAgeGr
           formData.password, 
           formData.name, 
           formData.role,
-          formData.role === 'student' ? formData.ageGroup : undefined,
-          formData.role === 'parent' ? formData.childName : undefined,
-          formData.role === 'school_admin' ? formData.schoolName : undefined,
-          (formData.role === 'student' || formData.role === 'school_admin') ? formData.packageId : undefined
+          undefined, // ageGroup not needed for parent
+          undefined, // childName handled separately
+          undefined, // schoolName not needed
+          formData.role === 'parent' ? formData.packageId : undefined
         );
         onSuccess('Successfully signed up!');
       }
@@ -97,63 +97,18 @@ export function AuthModal({ isOpen, mode: initialMode, initialRole, initialAgeGr
                   data-testid="select-role"
                 >
                   <option value="">Select your role</option>
-                  <option value="student">Student</option>
                   <option value="teacher">Teacher</option>
                   <option value="parent">Parent</option>
-                  <option value="school_admin">School Administrator</option>
                 </select>
               </div>
 
-              {formData.role === 'student' && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Age Group</label>
-                  <select 
-                    value={formData.ageGroup}
-                    onChange={(e) => setFormData({...formData, ageGroup: e.target.value})}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    data-testid="select-age-group"
-                  >
-                    <option value="6-11">Little Coders (6-11 years)</option>
-                    <option value="12-17">Teen Coders (12-17 years)</option>
-                  </select>
-                </div>
-              )}
-
               {formData.role === 'parent' && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Child's Name</label>
-                  <input 
-                    type="text" 
-                    value={formData.childName}
-                    onChange={(e) => setFormData({...formData, childName: e.target.value})}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                    placeholder="Enter your child's name"
-                    data-testid="input-child-name"
-                  />
-                </div>
-              )}
-
-              {formData.role === 'school_admin' && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">School Name</label>
-                  <input 
-                    type="text" 
-                    value={formData.schoolName}
-                    onChange={(e) => setFormData({...formData, schoolName: e.target.value})}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                    placeholder="Enter your school's name"
-                    data-testid="input-school-name"
-                  />
-                </div>
-              )}
-
-              {(formData.role === 'student' || formData.role === 'school_admin') && (
                 <div className="mb-6">
                   <p className="text-sm text-gray-600 mb-2">
-                    Role: {formData.role} → Package type: {formData.role === 'school_admin' ? 'school' : 'individual'}
+                    Choose a learning plan for your family
                   </p>
                   <PackageSelector
-                    packageType={formData.role === 'school_admin' ? 'school' : 'individual'}
+                    packageType="individual"
                     selectedPackageId={formData.packageId}
                     onPackageSelect={(packageId) => setFormData({...formData, packageId})}
                   />
@@ -200,11 +155,11 @@ export function AuthModal({ isOpen, mode: initialMode, initialRole, initialAgeGr
 
           <button 
             type="submit" 
-            disabled={mode === 'signup' && (formData.role === 'student' || formData.role === 'school_admin') && !formData.packageId}
+            disabled={mode === 'signup' && formData.role === 'parent' && !formData.packageId}
             className={`w-full py-3 rounded-lg font-semibold transition ${
               mode === 'signin' 
                 ? 'bg-blue-500 text-white hover:bg-blue-600' 
-                : (mode === 'signup' && (formData.role === 'student' || formData.role === 'school_admin') && !formData.packageId)
+                : (mode === 'signup' && formData.role === 'parent' && !formData.packageId)
                   ? 'bg-gray-400 text-white cursor-not-allowed'
                   : 'bg-green-500 text-white hover:bg-green-600'
             }`}

@@ -58,240 +58,361 @@ export function StudentLearningMaterials({ ageGroup }: StudentLearningMaterialsP
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
 
-  // Mock data for courses based on age group
+  // Original courses based on age group with embedded videos
   const mockCourses: Course[] = ageGroup === '6-11' ? [
     {
-      id: 'scratch-basics',
-      title: 'Scratch Programming Basics',
-      description: 'Learn to create animations and games with visual blocks',
+      id: 'scratch-programming',
+      title: 'Scratch Programming',
+      description: 'Create animations, stories, and simple games using drag-and-drop blocks',
       ageGroup: '6-11',
       difficulty: 'beginner',
       duration: '4 hours',
-      lessonsCount: 8,
-      completedLessons: 3,
-      thumbnail: '/api/placeholder/300/200',
+      lessonsCount: 6,
+      completedLessons: 2,
+      thumbnail: '🎨',
       lessons: [
         {
-          id: 'lesson-1',
-          title: 'Getting Started with Scratch',
+          id: 'scratch-1',
+          title: 'Visual Lab Overview - How Blocks Work',
           type: 'video',
           duration: '15 min',
           completed: true,
-          videoUrl: '#'
+          videoUrl: 'https://www.youtube.com/embed/jXUZaf5D12A'
         },
         {
-          id: 'lesson-2',
-          title: 'Moving Sprites Around',
-          type: 'interactive',
-          duration: '20 min',
-          completed: true
-        },
-        {
-          id: 'lesson-3',
-          title: 'Making Your First Animation',
-          type: 'coding',
-          duration: '25 min',
-          completed: true
-        },
-        {
-          id: 'lesson-4',
-          title: 'Adding Sounds and Effects',
-          type: 'video',
-          duration: '18 min',
-          completed: false
-        },
-        {
-          id: 'lesson-5',
-          title: 'Creating Interactive Stories',
+          id: 'scratch-2',
+          title: 'Creating Your First Animation',
           type: 'interactive',
           duration: '30 min',
-          completed: false
+          completed: true
         },
         {
-          id: 'lesson-6',
-          title: 'Game Development Basics',
+          id: 'scratch-3',
+          title: 'Interactive Stories and Games',
           type: 'coding',
-          duration: '35 min',
+          duration: '45 min',
           completed: false
         },
         {
-          id: 'lesson-7',
+          id: 'scratch-4',
+          title: 'Adding Sounds and Effects',
+          type: 'interactive',
+          duration: '25 min',
+          completed: false
+        },
+        {
+          id: 'scratch-5',
           title: 'Sharing Your Projects',
           type: 'video',
-          duration: '12 min',
+          duration: '20 min',
           completed: false
         },
         {
-          id: 'lesson-8',
-          title: 'Final Quiz: Scratch Mastery',
-          type: 'quiz',
-          duration: '15 min',
+          id: 'scratch-6',
+          title: 'Final Project: Create Your Game',
+          type: 'coding',
+          duration: '60 min',
           completed: false
         }
       ]
     },
     {
-      id: 'robotics-intro',
-      title: 'Introduction to Robotics',
-      description: 'Control robots and learn basic programming concepts',
+      id: 'robotics-basics',
+      title: 'Robotics Basics',
+      description: 'Control virtual robots and learn basic programming logic',
       ageGroup: '6-11',
       difficulty: 'beginner',
       duration: '3 hours',
-      lessonsCount: 6,
+      lessonsCount: 5,
       completedLessons: 1,
-      thumbnail: '/api/placeholder/300/200',
+      thumbnail: '🤖',
       lessons: [
         {
           id: 'robot-1',
-          title: 'What is a Robot?',
+          title: 'Micro:bit Introduction for Kids',
           type: 'video',
           duration: '12 min',
-          completed: true
+          completed: true,
+          videoUrl: 'https://www.youtube.com/embed/u2u7UJSRuko'
         },
         {
           id: 'robot-2',
-          title: 'Programming Robot Movements',
-          type: 'interactive',
-          duration: '25 min',
-          completed: false
+          title: 'micro:bit Coding Lab Tutorial',
+          type: 'video',
+          duration: '15 min',
+          completed: false,
+          videoUrl: 'https://www.youtube.com/embed/Wuza5WXiMkc'
         },
         {
           id: 'robot-3',
-          title: 'Sensors and Detection',
+          title: 'Programming Robot Movements',
+          type: 'interactive',
+          duration: '35 min',
+          completed: false
+        },
+        {
+          id: 'robot-4',
+          title: 'LED Patterns and Lights',
           type: 'coding',
           duration: '30 min',
+          completed: false
+        },
+        {
+          id: 'robot-5',
+          title: 'Sensors and Detection',
+          type: 'interactive',
+          duration: '40 min',
+          completed: false
+        }
+      ]
+    },
+    {
+      id: 'digital-art-animation',
+      title: 'Digital Art & Animation',
+      description: 'Combine creativity with coding to make moving pictures',
+      ageGroup: '6-11',
+      difficulty: 'beginner',
+      duration: '3.5 hours',
+      lessonsCount: 5,
+      completedLessons: 0,
+      thumbnail: '🎬',
+      lessons: [
+        {
+          id: 'art-1',
+          title: 'Introduction to Digital Art',
+          type: 'video',
+          duration: '18 min',
+          completed: false
+        },
+        {
+          id: 'art-2',
+          title: 'Drawing with Code',
+          type: 'interactive',
+          duration: '40 min',
+          completed: false
+        },
+        {
+          id: 'art-3',
+          title: 'Animation Basics',
+          type: 'coding',
+          duration: '45 min',
+          completed: false
+        },
+        {
+          id: 'art-4',
+          title: 'Creating Moving Characters',
+          type: 'interactive',
+          duration: '50 min',
+          completed: false
+        },
+        {
+          id: 'art-5',
+          title: 'Final Animation Project',
+          type: 'coding',
+          duration: '60 min',
           completed: false
         }
       ]
     }
   ] : [
     {
-      id: 'python-fundamentals',
-      title: 'Python Programming Fundamentals',
-      description: 'Master the basics of Python programming language',
+      id: 'python-programming',
+      title: 'Python Programming',
+      description: 'Master one of the most popular programming languages used by professionals',
       ageGroup: '12-17',
       difficulty: 'beginner',
       duration: '8 hours',
-      lessonsCount: 12,
-      completedLessons: 5,
-      thumbnail: '/api/placeholder/300/200',
+      lessonsCount: 6,
+      completedLessons: 2,
+      thumbnail: '🐍',
       lessons: [
         {
           id: 'python-1',
-          title: 'Introduction to Python',
+          title: 'Python IDE and Code Editor Setup',
           type: 'video',
           duration: '20 min',
-          completed: true
+          completed: true,
+          videoUrl: 'https://www.youtube.com/embed/VuKvR1J2LQE'
         },
         {
           id: 'python-2',
           title: 'Variables and Data Types',
           type: 'coding',
-          duration: '30 min',
+          duration: '45 min',
           completed: true
         },
         {
           id: 'python-3',
-          title: 'Control Structures',
+          title: 'Control Structures and Loops',
           type: 'coding',
-          duration: '45 min',
-          completed: true
+          duration: '60 min',
+          completed: false
         },
         {
           id: 'python-4',
           title: 'Functions and Modules',
           type: 'coding',
-          duration: '40 min',
-          completed: true
+          duration: '50 min',
+          completed: false
         },
         {
           id: 'python-5',
-          title: 'Working with Lists',
+          title: 'Working with Files and Data',
           type: 'interactive',
-          duration: '35 min',
-          completed: true
+          duration: '55 min',
+          completed: false
         },
         {
           id: 'python-6',
-          title: 'File Handling',
+          title: 'Final Project: Build Your App',
           type: 'coding',
-          duration: '30 min',
+          duration: '90 min',
           completed: false
         }
       ]
     },
     {
       id: 'web-development',
-      title: 'Web Development Basics',
-      description: 'Learn HTML, CSS, and JavaScript to build websites',
+      title: 'Web Development',
+      description: 'Create websites and web applications using HTML, CSS, and JavaScript',
       ageGroup: '12-17',
       difficulty: 'intermediate',
       duration: '10 hours',
-      lessonsCount: 15,
-      completedLessons: 2,
-      thumbnail: '/api/placeholder/300/200',
+      lessonsCount: 6,
+      completedLessons: 1,
+      thumbnail: '🌐',
       lessons: [
         {
           id: 'web-1',
-          title: 'Introduction to HTML',
+          title: 'Building Your First Web Project',
           type: 'video',
           duration: '25 min',
-          completed: true
+          completed: true,
+          videoUrl: 'https://www.youtube.com/embed/pQN-pnXPaVg'
         },
         {
           id: 'web-2',
-          title: 'HTML Elements and Structure',
+          title: 'HTML Structure and Elements',
           type: 'coding',
-          duration: '40 min',
-          completed: true
+          duration: '50 min',
+          completed: false
         },
         {
           id: 'web-3',
-          title: 'CSS Styling Basics',
+          title: 'CSS Styling and Layouts',
           type: 'coding',
+          duration: '60 min',
+          completed: false
+        },
+        {
+          id: 'web-4',
+          title: 'JavaScript Interactivity',
+          type: 'coding',
+          duration: '75 min',
+          completed: false
+        },
+        {
+          id: 'web-5',
+          title: 'Responsive Design',
+          type: 'interactive',
           duration: '45 min',
+          completed: false
+        },
+        {
+          id: 'web-6',
+          title: 'Portfolio Website Project',
+          type: 'coding',
+          duration: '120 min',
           completed: false
         }
       ]
     },
     {
-      id: 'prompt-engineering',
-      title: '🤖 AI Prompt Engineering',
-      description: 'Learn the art of crafting effective prompts for AI models',
+      id: 'ai-prompt-engineering',
+      title: 'Prompt Engineering & AI',
+      description: 'Learn to work with AI tools like ChatGPT, Claude, and build AI-powered applications',
       ageGroup: '12-17',
       difficulty: 'intermediate',
       duration: '3 hours',
       lessonsCount: 4,
-      completedLessons: 0,
-      thumbnail: '/api/placeholder/300/200',
+      completedLessons: 1,
+      thumbnail: '🤖',
       lessons: [
         {
-          id: 'prompt-1',
-          title: 'What is Prompt Engineering?',
+          id: 'ai-1',
+          title: 'What is AI Prompt Engineering?',
           type: 'video',
-          duration: '2 min',
-          completed: false,
+          duration: '15 min',
+          completed: true,
           videoUrl: 'https://www.youtube.com/embed/dOxUroR57xs'
         },
         {
-          id: 'prompt-2',
-          title: 'Writing Clear Prompts',
+          id: 'ai-2',
+          title: 'Writing Effective Prompts',
           type: 'interactive',
-          duration: '30 min',
+          duration: '40 min',
           completed: false
         },
         {
-          id: 'prompt-3',
-          title: 'Advanced Techniques',
-          type: 'interactive',
-          duration: '45 min',
+          id: 'ai-3',
+          title: 'AI Tools for Developers',
+          type: 'coding',
+          duration: '50 min',
           completed: false
         },
         {
-          id: 'prompt-4',
-          title: 'Real-World Applications',
+          id: 'ai-4',
+          title: 'Build an AI-Powered App',
+          type: 'coding',
+          duration: '75 min',
+          completed: false
+        }
+      ]
+    },
+    {
+      id: 'data-science-basics',
+      title: 'Data Science Basics',
+      description: 'Analyze data and create visualizations using Python libraries',
+      ageGroup: '12-17',
+      difficulty: 'intermediate',
+      duration: '6 hours',
+      lessonsCount: 5,
+      completedLessons: 0,
+      thumbnail: '📊',
+      lessons: [
+        {
+          id: 'data-1',
+          title: 'Introduction to Data Science',
+          type: 'video',
+          duration: '20 min',
+          completed: false
+        },
+        {
+          id: 'data-2',
+          title: 'Working with Data in Python',
           type: 'coding',
           duration: '60 min',
+          completed: false
+        },
+        {
+          id: 'data-3',
+          title: 'Data Visualization',
+          type: 'interactive',
+          duration: '50 min',
+          completed: false
+        },
+        {
+          id: 'data-4',
+          title: 'Statistical Analysis',
+          type: 'coding',
+          duration: '70 min',
+          completed: false
+        },
+        {
+          id: 'data-5',
+          title: 'Final Data Project',
+          type: 'coding',
+          duration: '90 min',
           completed: false
         }
       ]
