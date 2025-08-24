@@ -1,18 +1,15 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { z } from 'zod';
 import { eq } from 'drizzle-orm';
-import { db } from '../../server/db';
+import { db } from '../_lib/db';
 import { users } from '../../shared/schema';
-import { createUser, createUserSession } from '../../server/auth';
+import { createUser, createUserSession } from '../_lib/auth';
 
 const signUpSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   name: z.string().min(1),
-  role: z.enum(['student', 'teacher', 'parent', 'school_admin']),
-  ageGroup: z.enum(['6-11', '12-17']).optional(),
-  childName: z.string().optional(),
-  schoolName: z.string().optional(),
+  role: z.enum(['teacher', 'parent']),
   packageId: z.string().optional(),
 });
 
