@@ -17,7 +17,6 @@ import { ParentDashboard } from "@/pages/ParentDashboard";
 import { SchoolAdminDashboard } from "@/components/SchoolAdminDashboard";
 import { PricingPage } from "@/pages/PricingPage";
 import { AdminPage } from "@/pages/AdminPage";
-import { RoboticsKitsPage } from "@/pages/RoboticsKitsPage";
 import { TeacherTrainingPage } from "@/pages/TeacherTrainingPage";
 import { ContactPage } from "@/pages/ContactPage";
 import { CurriculumPage } from "@/pages/CurriculumPage";
@@ -84,9 +83,6 @@ function AppContent() {
         <Route path="/admin">
           <AdminPage />
         </Route>
-        <Route path="/robotics-kits">
-          <RoboticsKitsPage />
-        </Route>
         <Route path="/teacher-training">
           <TeacherTrainingPage />
         </Route>
@@ -133,7 +129,7 @@ function AppContent() {
           href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" 
         />
         
-        <EnhancedNavigation onAuthModalOpen={openAuthModal} />
+        <EnhancedNavigation />
         
         {renderMainContent()}
 
