@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CourseExplanationModal } from '@/components/CourseExplanationModal';
+
 import { CourseExplanationPage } from '@/components/CourseExplanationPage';
 import { InstitutionalHomePage } from '@/components/enhanced/InstitutionalHomePage';
 import type { AgeGroup } from '@/types/user';
