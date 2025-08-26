@@ -58,7 +58,7 @@ export function StudentLearningMaterials({ ageGroup }: StudentLearningMaterialsP
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
 
-  // Original courses based on age group with embedded videos
+  // Updated courses to match the reference site display
   const mockCourses: Course[] = ageGroup === '6-11' ? [
     {
       id: 'scratch-programming',
@@ -422,32 +422,48 @@ export function StudentLearningMaterials({ ageGroup }: StudentLearningMaterialsP
   const mockStudyMaterials: StudyMaterial[] = ageGroup === '6-11' ? [
     {
       id: 'scratch-guide',
-      title: 'Scratch Programming Guide',
+      title: 'Scratch Programming Basics',
       type: 'pdf',
       size: '2.3 MB',
       downloadUrl: '#',
-      category: 'Programming'
+      category: 'Visual Programming'
     },
     {
-      id: 'robotics-handbook',
-      title: 'Kids Robotics Handbook',
+      id: 'block-coding-reference',
+      title: 'Block Coding Reference Card',
+      type: 'pdf',
+      size: '1.2 MB',
+      downloadUrl: '#',
+      category: 'Visual Programming'
+    },
+    {
+      id: 'microbit-guide',
+      title: 'Micro:bit Programming Guide',
       type: 'pdf',
       size: '1.8 MB',
       downloadUrl: '#',
       category: 'Robotics'
     },
     {
-      id: 'coding-games',
-      title: 'Fun Coding Games',
+      id: 'game-design-basics',
+      title: 'Game Design for Kids',
       type: 'presentation',
-      size: '4.2 MB',
+      size: '3.5 MB',
       downloadUrl: '#',
-      category: 'Games'
+      category: 'Game Development'
+    },
+    {
+      id: 'coding-exercises',
+      title: 'Fun Coding Exercises',
+      type: 'doc',
+      size: '2.1 MB',
+      downloadUrl: '#',
+      category: 'Practice'
     }
   ] : [
     {
       id: 'python-reference',
-      title: 'Python Reference Guide',
+      title: 'Python Programming Reference',
       type: 'pdf',
       size: '3.1 MB',
       downloadUrl: '#',
@@ -455,19 +471,35 @@ export function StudentLearningMaterials({ ageGroup }: StudentLearningMaterialsP
     },
     {
       id: 'web-dev-cheatsheet',
-      title: 'Web Development Cheat Sheet',
+      title: 'HTML, CSS, JavaScript Guide',
       type: 'pdf',
-      size: '1.5 MB',
+      size: '2.5 MB',
       downloadUrl: '#',
       category: 'Web Development'
     },
     {
-      id: 'algorithms-guide',
-      title: 'Algorithms and Data Structures',
+      id: 'ai-prompt-guide',
+      title: 'AI & Prompt Engineering Handbook',
+      type: 'pdf',
+      size: '2.2 MB',
+      downloadUrl: '#',
+      category: 'AI & Machine Learning'
+    },
+    {
+      id: 'data-science-basics',
+      title: 'Data Science Fundamentals',
       type: 'doc',
       size: '2.8 MB',
       downloadUrl: '#',
-      category: 'Computer Science'
+      category: 'Data Science'
+    },
+    {
+      id: 'coding-best-practices',
+      title: 'Programming Best Practices',
+      type: 'pdf',
+      size: '1.9 MB',
+      downloadUrl: '#',
+      category: 'Programming'
     }
   ];
 
@@ -657,57 +689,70 @@ export function StudentLearningMaterials({ ageGroup }: StudentLearningMaterialsP
         </TabsList>
 
         <TabsContent value="courses" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {courses?.map((course) => (
-              <Card 
-                key={course.id} 
-                className="cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => setSelectedCourse(course)}
-                data-testid={`course-${course.id}`}
-              >
-                <CardHeader>
-                  <div className="aspect-video bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg mb-4 flex items-center justify-center">
-                    <BookOpen className="h-12 w-12 text-white" />
-                  </div>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg mb-2">{course.title}</CardTitle>
-                      <CardDescription>{course.description}</CardDescription>
+          {!courses || courses.length === 0 ? (
+            <div className="text-center py-12">
+              <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Courses Available</h3>
+              <p className="text-gray-600">Check back later for new courses.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {courses.map((course) => (
+                <Card 
+                  key={course.id} 
+                  className="cursor-pointer hover:shadow-lg transition-shadow border border-gray-200"
+                  onClick={() => setSelectedCourse(course)}
+                  data-testid={`course-${course.id}`}
+                >
+                  <CardHeader className="pb-4">
+                    <div className="aspect-video bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg mb-4 flex items-center justify-center text-3xl">
+                      {course.thumbnail}
                     </div>
-                    <Badge className={getDifficultyColor(course.difficulty)}>
-                      {course.difficulty}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-sm text-gray-600">
-                      <span className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {course.duration}
-                      </span>
-                      <span>{course.lessonsCount} lessons</span>
-                    </div>
-                    
-                    <div>
-                      <div className="flex items-center justify-between text-sm mb-1">
-                        <span>Progress</span>
-                        <span>{course.completedLessons}/{course.lessonsCount}</span>
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between">
+                        <CardTitle className="text-lg leading-tight">{course.title}</CardTitle>
+                        <Badge className={getDifficultyColor(course.difficulty)} variant="secondary">
+                          {course.difficulty}
+                        </Badge>
                       </div>
-                      <Progress 
-                        value={(course.completedLessons / course.lessonsCount) * 100}
-                        className="h-2"
-                      />
+                      <CardDescription className="text-sm line-clamp-2">
+                        {course.description}
+                      </CardDescription>
                     </div>
-                    
-                    <Button className="w-full">
-                      {course.completedLessons === 0 ? 'Start Course' : 'Continue Learning'}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between text-sm text-gray-600">
+                        <span className="flex items-center">
+                          <Clock className="h-4 w-4 mr-1" />
+                          {course.duration}
+                        </span>
+                        <span className="flex items-center">
+                          <BookOpen className="h-4 w-4 mr-1" />
+                          {course.lessonsCount} lessons
+                        </span>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">Progress</span>
+                          <span className="text-gray-600">{course.completedLessons}/{course.lessonsCount}</span>
+                        </div>
+                        <Progress 
+                          value={(course.completedLessons / course.lessonsCount) * 100}
+                          className="h-2"
+                        />
+                      </div>
+                      
+                      <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+                        {course.completedLessons === 0 ? 'Start Course' : 'Continue Learning'}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="materials" className="space-y-6">
