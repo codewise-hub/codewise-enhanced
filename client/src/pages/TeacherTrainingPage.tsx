@@ -395,65 +395,7 @@ export function TeacherTrainingPage() {
         </div>
       </section>
 
-      {/* Expert Instructors */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Learn From Education Experts</h2>
-            <p className="text-xl text-gray-600">World-class educators with real classroom experience</p>
-          </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {instructors.map((instructor, index) => (
-              <Card key={index} className="text-center p-6">
-                <img 
-                  src={instructor.image}
-                  alt={instructor.name}
-                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="text-xl font-semibold text-gray-900 mb-1">{instructor.name}</h3>
-                <p className="text-blue-600 font-medium mb-2">{instructor.title}</p>
-                <p className="text-gray-600 text-sm mb-4">{instructor.credentials}</p>
-                <div className="flex flex-wrap gap-1 justify-center">
-                  {instructor.specialties.map((specialty, specIndex) => (
-                    <Badge key={specIndex} variant="outline" className="text-xs">
-                      {specialty}
-                    </Badge>
-                  ))}
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Educator Success Stories</h2>
-            <p className="text-xl text-gray-600">Hear from teachers who've transformed their practice</p>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="p-6">
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, starIndex) => (
-                    <Star key={starIndex} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4 italic">"{testimonial.quote}"</p>
-                <div className="border-t pt-4">
-                  <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                  <p className="text-blue-600">{testimonial.role}</p>
-                  <p className="text-gray-600 text-sm">{testimonial.school}</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Contact & Support */}
       <section className="py-16 bg-blue-600 text-white">
