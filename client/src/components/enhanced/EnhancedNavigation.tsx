@@ -62,8 +62,7 @@ export function EnhancedNavigation({ onAuthModalOpen }: EnhancedNavigationProps 
       icon: <Award className="w-4 h-4" />,
       items: [
         { title: "Certification", href: "/certification", description: "Industry-recognized credentials" },
-        { title: "Competitions", href: "/competitions", description: "Coding contests and challenges" },
-        { title: "Community", href: "/community", description: "Connect with other learners" },
+        { title: "Competitions", href: "#competitions", description: "Coding contests and challenges" },
         { title: "Help Center", href: "/help", description: "Support and documentation" }
       ]
     }
