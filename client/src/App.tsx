@@ -22,10 +22,10 @@ import { ContactPage } from "@/pages/ContactPage";
 import { CurriculumPage } from "@/pages/CurriculumPage";
 import { AnalyticsPage } from "@/pages/AnalyticsPage";
 import { CertificationPage } from "@/pages/CertificationPage";
-import { CoursesPage } from "@/pages/CoursesPage";
-import { LessonsPage } from "@/pages/LessonsPage";
-import { StudyMaterialsPage } from "@/pages/StudyMaterialsPage";
-import { CompetitionsPage } from "@/pages/CompetitionsPage";
+import { SimpleCoursesPage } from "@/pages/SimpleCoursesPage";
+import { SimpleLessonsPage } from "@/pages/SimpleLessonsPage";
+import { SimpleStudyMaterialsPage } from "@/pages/SimpleStudyMaterialsPage";
+import { SimpleCompetitionsPage } from "@/pages/SimpleCompetitionsPage";
 import { LearningDashboardPage } from "@/pages/LearningDashboardPage";
 import { Footer } from "@/components/Footer";
 
@@ -105,22 +105,22 @@ function AppContent() {
         </Route>
         <Route path="/courses/:ageGroup">
           {({ ageGroup }) => (
-            <CoursesPage ageGroup={ageGroup as '6-11' | '12-17'} />
+            <SimpleCoursesPage ageGroup={ageGroup as '6-11' | '12-17'} />
           )}
         </Route>
         <Route path="/lessons/:ageGroup">
           {({ ageGroup }) => (
-            <LessonsPage ageGroup={ageGroup as '6-11' | '12-17'} />
+            <SimpleLessonsPage ageGroup={ageGroup as '6-11' | '12-17'} />
           )}
         </Route>
         <Route path="/study-materials/:ageGroup">
           {({ ageGroup }) => (
-            <StudyMaterialsPage ageGroup={ageGroup as '6-11' | '12-17'} />
+            <SimpleStudyMaterialsPage ageGroup={ageGroup as '6-11' | '12-17'} />
           )}
         </Route>
         <Route path="/competitions/:ageGroup">
           {({ ageGroup }) => (
-            <CompetitionsPage ageGroup={ageGroup as '6-11' | '12-17'} />
+            <SimpleCompetitionsPage ageGroup={ageGroup as '6-11' | '12-17'} />
           )}
         </Route>
         <Route path="/learning/:ageGroup">
