@@ -14,7 +14,7 @@ export interface Package {
 }
 
 interface PackageSelectorProps {
-  packageType: 'individual' | 'school';
+  packageType?: 'individual' | 'school';
   selectedPackageId: string;
   onPackageSelect: (packageId: string) => void;
 }
@@ -57,30 +57,7 @@ export function PackageSelector({ packageType, selectedPackageId, onPackageSelec
         if (allPackages.length === 0) {
           // Fallback: Use hardcoded packages with correct ZAR pricing
           console.log('Using fallback packages for packageType:', packageType);
-          allPackages = packageType === 'school' ? [
-            {
-              id: 'school-basic',
-              name: 'School Basic',
-              description: 'Essential package for small schools and classrooms',
-              price: '6999.00',
-              currency: 'ZAR',
-              duration: 'monthly',
-              features: '["Up to 30 Students", "Teacher Dashboard", "Classroom Management", "Assignment Tools", "Progress Analytics", "Email Support"]',
-              packageType: 'school',
-              isActive: true
-            },
-            {
-              id: 'school-premium',
-              name: 'School Premium',
-              description: 'Complete solution for larger schools with advanced features',
-              price: '17499.00',
-              currency: 'ZAR',
-              duration: 'monthly',
-              features: '["Up to 100 Students", "Advanced Analytics", "Custom Curriculum", "Teacher Training", "Priority Support", "Custom Branding"]',
-              packageType: 'school',
-              isActive: true
-            }
-          ] : [
+          allPackages = [
             {
               id: 'basic-explorer',
               name: 'Basic Explorer',
@@ -106,12 +83,46 @@ export function PackageSelector({ packageType, selectedPackageId, onPackageSelec
             {
               id: 'family-plan',
               name: 'Family Plan',
-              description: 'Multiple children learning together with parental oversight',
+              description: 'For families with multiple children',
               price: '999.00',
               currency: 'ZAR',
               duration: 'monthly',
-              features: '["Up to 4 Children", "All Features Included", "Parent Dashboard", "Progress Reports", "Family Projects", "Priority Support"]',
+              features: '["Up to 4 Child Accounts", "All Pro Features", "Family Progress Reports", "Priority Support"]',
               packageType: 'individual',
+              isActive: true
+            },
+            // School packages
+            {
+              id: 'small-school',
+              name: 'Small School Plan',
+              description: 'Perfect for schools with up to 100 students',
+              price: '2499.00',
+              currency: 'ZAR',
+              duration: 'monthly',
+              features: '["Up to 100 Students", "10 Teacher Accounts", "School Analytics", "Admin Dashboard", "Curriculum Management"]',
+              packageType: 'school',
+              isActive: true
+            },
+            {
+              id: 'medium-school',
+              name: 'Medium School Plan',
+              description: 'For schools with up to 500 students',
+              price: '4999.00',
+              currency: 'ZAR',
+              duration: 'monthly',
+              features: '["Up to 500 Students", "25 Teacher Accounts", "Advanced Analytics", "Custom Curriculum", "Training Support"]',
+              packageType: 'school',
+              isActive: true
+            },
+            {
+              id: 'large-school',
+              name: 'Large School Plan',
+              description: 'For large schools and districts',
+              price: '9999.00',
+              currency: 'ZAR',
+              duration: 'monthly',
+              features: '["Unlimited Students", "Unlimited Teachers", "District Management", "Custom Development", "Dedicated Support"]',
+              packageType: 'school',
               isActive: true
             }
           ];
