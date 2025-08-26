@@ -45,7 +45,7 @@ export function AuthModal({ isOpen, mode: initialMode, initialRole, initialAgeGr
           undefined, // ageGroup not needed for parent
           undefined, // childName handled separately
           undefined, // schoolName not needed
-          formData.role === 'parent' ? formData.packageId : undefined
+          (formData.role === 'parent' || formData.role === 'school_admin') ? formData.packageId : undefined
         );
         onSuccess('Successfully signed up!');
       }
@@ -97,18 +97,19 @@ export function AuthModal({ isOpen, mode: initialMode, initialRole, initialAgeGr
                   data-testid="select-role"
                 >
                   <option value="">Select your role</option>
-                  <option value="teacher">Teacher</option>
                   <option value="parent">Parent</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="school_admin">School Administrator</option>
                 </select>
               </div>
 
-              {formData.role === 'parent' && (
+              {(formData.role === 'parent' || formData.role === 'school_admin') && (
                 <div className="mb-6">
                   <p className="text-sm text-gray-600 mb-2">
-                    Choose a learning plan for your family
+                    {formData.role === 'parent' ? 'Choose a learning plan for your family' : 'Choose a plan for your school'}
                   </p>
                   <PackageSelector
-                    packageType="individual"
+                    packageType={formData.role === 'school_admin' ? 'school' : 'individual'}
                     selectedPackageId={formData.packageId}
                     onPackageSelect={(packageId) => setFormData({...formData, packageId})}
                   />
