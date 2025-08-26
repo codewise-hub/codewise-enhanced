@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CourseExplanationModal } from '@/components/CourseExplanationModal';
+import { CourseExplanationPage } from '@/components/CourseExplanationPage';
 import { InstitutionalHomePage } from '@/components/enhanced/InstitutionalHomePage';
 import type { AgeGroup } from '@/types/user';
 
@@ -10,7 +11,7 @@ interface HomePageProps {
 export function HomePage({ onAuthModalOpen }: HomePageProps) {
   const [showCourseExplanation, setShowCourseExplanation] = useState(false);
   const [selectedAgeGroup, setSelectedAgeGroup] = useState<AgeGroup>('6-11');
-  const [viewMode, setViewMode] = useState<'institutional' | 'student'>('institutional');
+  const [viewMode, setViewMode] = useState<'institutional' | 'student' | 'courses'>('institutional');
   
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -20,6 +21,16 @@ export function HomePage({ onAuthModalOpen }: HomePageProps) {
   // Show institutional homepage by default for professional appeal
   if (viewMode === 'institutional') {
     return <InstitutionalHomePage />;
+  }
+
+  // Show course explanation page when requested
+  if (viewMode === 'courses') {
+    return (
+      <CourseExplanationPage 
+        ageGroup={selectedAgeGroup}
+        onBack={() => setViewMode('student')}
+      />
+    );
   }
 
   return (
@@ -88,7 +99,7 @@ export function HomePage({ onAuthModalOpen }: HomePageProps) {
                 <button 
                   onClick={() => {
                     setSelectedAgeGroup('6-11');
-                    setShowCourseExplanation(true);
+                    setViewMode('courses');
                   }}
                   className="bg-purple-200 text-purple-800 px-4 py-2 rounded-lg font-medium hover:bg-purple-300 transition"
                   data-testid="button-little-coder-info"
@@ -128,7 +139,7 @@ export function HomePage({ onAuthModalOpen }: HomePageProps) {
                 <button 
                   onClick={() => {
                     setSelectedAgeGroup('12-17');
-                    setShowCourseExplanation(true);
+                    setViewMode('courses');
                   }}
                   className="bg-blue-200 text-blue-800 px-4 py-2 rounded-lg font-medium hover:bg-blue-300 transition"
                   data-testid="button-teen-coder-info"
@@ -198,18 +209,18 @@ export function HomePage({ onAuthModalOpen }: HomePageProps) {
             
             <div className="text-center">
               <div className="text-5xl text-green-500 mb-4">
-                <i className="fa-solid fa-robot"></i>
+                <i className="fa-solid fa-gamepad"></i>
               </div>
-              <h3 className="text-xl font-bold mb-4">Robot Programming</h3>
-              <p className="text-gray-600">Control virtual robots with drag-and-drop programming</p>
+              <h3 className="text-xl font-bold mb-4">Game Development</h3>
+              <p className="text-gray-600">Build interactive games and animations</p>
             </div>
             
             <div className="text-center">
               <div className="text-5xl text-purple-500 mb-4">
-                <i className="fa-solid fa-brain"></i>
+                <i className="fa-solid fa-lightbulb"></i>
               </div>
-              <h3 className="text-xl font-bold mb-4">AI-Powered Learning</h3>
-              <p className="text-gray-600">Personalized assistance and instant coding help</p>
+              <h3 className="text-xl font-bold mb-4">Smart Learning</h3>
+              <p className="text-gray-600">Guided tutorials and helpful hints</p>
             </div>
             
             <div className="text-center">
@@ -307,15 +318,47 @@ export function HomePage({ onAuthModalOpen }: HomePageProps) {
         </div>
       </section>
 
+      {/* Competitions Section */}
+      <section id="competitions" className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Coding Competitions</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Test your skills and compete with coders from around the world
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-xl shadow-lg p-6 text-center">
+              <div className="text-4xl text-yellow-500 mb-4">🏆</div>
+              <h3 className="text-xl font-bold mb-4">Monthly Challenges</h3>
+              <p className="text-gray-600 mb-4">New coding challenges every month for all skill levels</p>
+              <button className="bg-yellow-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition">
+                Join Challenge
+              </button>
+            </div>
+            
+            <div className="bg-white rounded-xl shadow-lg p-6 text-center">
+              <div className="text-4xl text-blue-500 mb-4">🎯</div>
+              <h3 className="text-xl font-bold mb-4">Skill Tests</h3>
+              <p className="text-gray-600 mb-4">Quick assessments to test your programming knowledge</p>
+              <button className="bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-600 transition">
+                Take Test
+              </button>
+            </div>
+            
+            <div className="bg-white rounded-xl shadow-lg p-6 text-center">
+              <div className="text-4xl text-green-500 mb-4">👑</div>
+              <h3 className="text-xl font-bold mb-4">Leaderboards</h3>
+              <p className="text-gray-600 mb-4">See how you rank against other young coders</p>
+              <button className="bg-green-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-600 transition">
+                View Rankings
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-
-      {/* Course Explanation Modal */}
-      <CourseExplanationModal
-        isOpen={showCourseExplanation}
-        onClose={() => setShowCourseExplanation(false)}
-        ageGroup={selectedAgeGroup}
-        onGetStarted={() => onAuthModalOpen('signup', 'student', selectedAgeGroup)}
-      />
     </div>
   );
 }
