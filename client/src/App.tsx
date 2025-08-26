@@ -22,6 +22,11 @@ import { ContactPage } from "@/pages/ContactPage";
 import { CurriculumPage } from "@/pages/CurriculumPage";
 import { AnalyticsPage } from "@/pages/AnalyticsPage";
 import { CertificationPage } from "@/pages/CertificationPage";
+import { CoursesPage } from "@/pages/CoursesPage";
+import { LessonsPage } from "@/pages/LessonsPage";
+import { StudyMaterialsPage } from "@/pages/StudyMaterialsPage";
+import { CompetitionsPage } from "@/pages/CompetitionsPage";
+import { LearningDashboardPage } from "@/pages/LearningDashboardPage";
 import { Footer } from "@/components/Footer";
 
 function AppContent() {
@@ -98,6 +103,31 @@ function AppContent() {
         <Route path="/certification">
           <CertificationPage />
         </Route>
+        <Route path="/courses/:ageGroup">
+          {({ ageGroup }) => (
+            <CoursesPage ageGroup={ageGroup as '6-11' | '12-17'} />
+          )}
+        </Route>
+        <Route path="/lessons/:ageGroup">
+          {({ ageGroup }) => (
+            <LessonsPage ageGroup={ageGroup as '6-11' | '12-17'} />
+          )}
+        </Route>
+        <Route path="/study-materials/:ageGroup">
+          {({ ageGroup }) => (
+            <StudyMaterialsPage ageGroup={ageGroup as '6-11' | '12-17'} />
+          )}
+        </Route>
+        <Route path="/competitions/:ageGroup">
+          {({ ageGroup }) => (
+            <CompetitionsPage ageGroup={ageGroup as '6-11' | '12-17'} />
+          )}
+        </Route>
+        <Route path="/learning/:ageGroup">
+          {({ ageGroup }) => (
+            <LearningDashboardPage ageGroup={ageGroup as '6-11' | '12-17'} />
+          )}
+        </Route>
         <Route path="/">
           {user ? renderDashboard() : <HomePage onAuthModalOpen={openAuthModal} />}
         </Route>
@@ -114,7 +144,7 @@ function AppContent() {
       case 'parent':
         return <ParentDashboard />;
       case 'school_admin':
-        return <SchoolAdminDashboard user={user as any} />;
+        return <SchoolAdminDashboard user={user} />;
       default:
         return <HomePage onAuthModalOpen={openAuthModal} />;
     }
