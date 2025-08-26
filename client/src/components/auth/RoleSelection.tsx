@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, GraduationCap, User, School } from "lucide-react";
+import { Users, User, Building } from "lucide-react";
 
 interface RoleSelectionProps {
   onRoleSelected: (role: string) => void;
@@ -13,21 +13,12 @@ export function RoleSelection({ onRoleSelected }: RoleSelectionProps) {
 
   const roles = [
     {
-      id: 'student',
-      title: 'Student',
-      description: 'I want to learn coding and programming',
-      icon: GraduationCap,
-      color: 'text-blue-600',
-      features: ['Interactive Lessons', 'Coding Projects', 'Progress Tracking', 'Achievements'],
-      ageNote: 'Ages 6-17 welcome',
-    },
-    {
       id: 'parent',
       title: 'Parent',
-      description: 'I want to monitor my child\'s learning progress',
+      description: 'I want to create accounts for my children and monitor their learning progress',
       icon: Users,
       color: 'text-green-600',
-      features: ['Link Child Accounts', 'Progress Reports', 'Activity Monitoring', 'Support Resources'],
+      features: ['Create Child Accounts', 'Progress Reports', 'Activity Monitoring', 'Support Resources'],
       ageNote: 'For guardians and parents',
     },
     {
@@ -37,16 +28,16 @@ export function RoleSelection({ onRoleSelected }: RoleSelectionProps) {
       icon: User,
       color: 'text-purple-600',
       features: ['Course Creation', 'Student Management', 'Analytics Dashboard', 'Curriculum Tools'],
-      ageNote: 'Individual or school-based',
+      ageNote: 'Individual educator',
     },
     {
       id: 'school_admin',
       title: 'School Administrator',
-      description: 'I want to manage our school\'s coding program',
-      icon: School,
-      color: 'text-orange-600',
-      features: ['Bulk User Creation', 'School Dashboard', 'Teacher Management', 'Subscription Control'],
-      ageNote: 'For educational institutions',
+      description: 'I want to manage teachers and students for my school',
+      icon: Building,
+      color: 'text-blue-600',
+      features: ['Teacher Management', 'Student Enrollment', 'School Analytics', 'Bulk Account Creation'],
+      ageNote: 'For school administrators',
     },
   ];
 
@@ -66,7 +57,7 @@ export function RoleSelection({ onRoleSelected }: RoleSelectionProps) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {roles.map((role) => {
           const isSelected = selectedRole === role.id;
           
