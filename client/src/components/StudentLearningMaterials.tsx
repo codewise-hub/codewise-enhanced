@@ -730,7 +730,13 @@ export function StudentLearningMaterials({ ageGroup }: StudentLearningMaterialsP
                       <Button 
                         size="sm" 
                         className="mt-3"
-                        onClick={() => window.open(material.downloadUrl, '_blank')}
+                        onClick={() => {
+                          if (material.downloadUrl === '#') {
+                            alert('This is a demo material. In the full version, this would download the actual file.');
+                            return;
+                          }
+                          window.open(material.downloadUrl, '_blank');
+                        }}
                         data-testid={`download-${material.id}`}
                       >
                         <Download className="h-4 w-4 mr-2" />
