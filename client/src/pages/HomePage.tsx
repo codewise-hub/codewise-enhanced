@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from "wouter";
 
 import { CourseExplanationPage } from '@/components/CourseExplanationPage';
 import { InstitutionalHomePage } from '@/components/enhanced/InstitutionalHomePage';
@@ -9,6 +10,7 @@ interface HomePageProps {
 }
 
 export function HomePage({ onAuthModalOpen }: HomePageProps) {
+  const [, setLocation] = useLocation();
   const [showCourseExplanation, setShowCourseExplanation] = useState(false);
   const [selectedAgeGroup, setSelectedAgeGroup] = useState<AgeGroup>('6-11');
   const [viewMode, setViewMode] = useState<'institutional' | 'student' | 'courses'>('institutional');
@@ -97,10 +99,7 @@ export function HomePage({ onAuthModalOpen }: HomePageProps) {
               </div>
               <div className="flex flex-col gap-3">
                 <button 
-                  onClick={() => {
-                    setSelectedAgeGroup('6-11');
-                    setViewMode('courses');
-                  }}
+                  onClick={() => setLocation('/learning/6-11')}
                   className="bg-purple-200 text-purple-800 px-4 py-2 rounded-lg font-medium hover:bg-purple-300 transition"
                   data-testid="button-little-coder-info"
                 >
@@ -137,10 +136,7 @@ export function HomePage({ onAuthModalOpen }: HomePageProps) {
               </div>
               <div className="flex flex-col gap-3">
                 <button 
-                  onClick={() => {
-                    setSelectedAgeGroup('12-17');
-                    setViewMode('courses');
-                  }}
+                  onClick={() => setLocation('/learning/12-17')}
                   className="bg-blue-200 text-blue-800 px-4 py-2 rounded-lg font-medium hover:bg-blue-300 transition"
                   data-testid="button-teen-coder-info"
                 >
