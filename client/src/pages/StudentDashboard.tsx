@@ -1,10 +1,10 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
-import { courseData, roboticsActivities } from "@/data/courseData";
+import { courseData } from "@/data/courseData";
 import { AITutorModal } from "@/components/AITutorModal";
 import { VideoConferenceModal } from "@/components/VideoConferenceModal";
 import { MicrobitDeviceConnector } from "@/components/MicrobitDeviceConnector";
-import { RoboticsLabModal } from "@/components/RoboticsLabModal";
+
 import { StudentLearningMaterials } from "@/components/StudentLearningMaterials";
 
 interface StudentDashboardProps {
@@ -30,8 +30,7 @@ export function StudentDashboard({ onCodingLabOpen }: StudentDashboardProps) {
   const [showAITutor, setShowAITutor] = useState(false);
   const [showVideoCall, setShowVideoCall] = useState(false);
   const [showDeviceConnector, setShowDeviceConnector] = useState(false);
-  const [showRoboticsLab, setShowRoboticsLab] = useState(false);
-  const [selectedRoboticsActivity, setSelectedRoboticsActivity] = useState<any>(null);
+
 
   const isLittleCoder = user?.ageGroup === '6-11';
 
@@ -160,44 +159,7 @@ export function StudentDashboard({ onCodingLabOpen }: StudentDashboardProps) {
       </div>
 
       {/* Robotics Activities for Little Coders */}
-      {isLittleCoder && (
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-6">🤖 Robotics Fun Zone</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {roboticsActivities["6-11"].map((activity) => (
-              <div 
-                key={activity.id} 
-                onClick={() => {
-                  setSelectedRoboticsActivity(activity);
-                  setShowRoboticsLab(true);
-                }}
-                className="dashboard-card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
-              >
-                <div className="aspect-square bg-gradient-to-br from-green-100 to-yellow-100 rounded-lg mb-4 flex items-center justify-center">
-                  <div className="text-3xl">
-                    {activity.type === 'maze' ? '🏃' : activity.type === 'puzzle' ? '🧩' : activity.type === 'challenge' ? '🌟' : '🎨'}
-                  </div>
-                </div>
-                <h3 className="font-bold mb-2">{activity.title}</h3>
-                <p className="text-gray-600 text-sm mb-3">{activity.description}</p>
-                <div className="flex justify-between items-center mb-3">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    activity.difficulty === 'easy' ? 'bg-green-100 text-green-800' :
-                    activity.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-800' : 
-                    'bg-red-100 text-red-800'
-                  }`}>
-                    {activity.difficulty}
-                  </span>
-                  <span className="text-gray-500 text-xs">⚡ {activity.points} pts</span>
-                </div>
-                <button className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">
-                  Open Robotics Lab
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+
 
       {/* Learning Content */}
       <div className="grid lg:grid-cols-3 gap-8">
@@ -356,11 +318,7 @@ export function StudentDashboard({ onCodingLabOpen }: StudentDashboardProps) {
         onClose={() => setShowDeviceConnector(false)}
         onDeviceConnected={(device) => console.log('Device connected:', device)}
       />
-      <RoboticsLabModal 
-        isOpen={showRoboticsLab} 
-        onClose={() => setShowRoboticsLab(false)}
-        activity={selectedRoboticsActivity}
-      />
+
     </div>
   );
 }
