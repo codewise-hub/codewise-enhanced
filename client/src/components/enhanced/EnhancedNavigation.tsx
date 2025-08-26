@@ -27,8 +27,13 @@ import {
   X
 } from "lucide-react";
 
-export function EnhancedNavigation() {
-  const { user, isAuthenticated } = useAuth();
+interface EnhancedNavigationProps {
+  onAuthModalOpen?: (mode: 'signin' | 'signup', role?: string, ageGroup?: string) => void;
+}
+
+export function EnhancedNavigation({ onAuthModalOpen }: EnhancedNavigationProps = {}) {
+  const { user } = useAuth();
+  const isAuthenticated = !!user;
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -49,7 +54,6 @@ export function EnhancedNavigation() {
       items: [
         { title: "Curriculum Integration", href: "/curriculum", description: "CAPS-aligned learning pathways" },
         { title: "Teacher Training", href: "/teacher-training", description: "Professional development programs" },
-        { title: "Robotics Kits", href: "/robotics-kits", description: "Physical learning materials" },
         { title: "School Dashboard", href: "/school-admin", description: "Management and analytics" }
       ]
     },
@@ -66,7 +70,6 @@ export function EnhancedNavigation() {
   ];
 
   const quickActions = [
-    { title: "Contact Us", href: "/contact", icon: <Phone className="w-4 h-4" /> },
     { title: "Pricing", href: "/pricing", icon: <DollarSign className="w-4 h-4" /> }
   ];
 
@@ -171,10 +174,19 @@ export function EnhancedNavigation() {
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <Button variant="ghost" size="sm" data-testid="button-signin">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  data-testid="button-signin"
+                  onClick={() => onAuthModalOpen?.('signin')}
+                >
                   Sign In
                 </Button>
-                <Button size="sm" data-testid="button-signup">
+                <Button 
+                  size="sm" 
+                  data-testid="button-signup"
+                  onClick={() => onAuthModalOpen?.('signup')}
+                >
                   Get Started
                 </Button>
               </div>
@@ -252,10 +264,19 @@ export function EnhancedNavigation() {
                   </div>
                 ) : (
                   <div className="space-y-2 px-3">
-                    <Button variant="ghost" size="sm" className="w-full justify-start">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="w-full justify-start"
+                      onClick={() => onAuthModalOpen?.('signin')}
+                    >
                       Sign In
                     </Button>
-                    <Button size="sm" className="w-full">
+                    <Button 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => onAuthModalOpen?.('signup')}
+                    >
                       Get Started
                     </Button>
                   </div>
