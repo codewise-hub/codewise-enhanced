@@ -85,13 +85,14 @@ router.post('/signup', async (req, res) => {
 // Sign in route
 router.post('/signin', async (req, res) => {
   try {
+    console.log('Sign in attempt for:', req.body?.email);
     const { email, password } = signInSchema.parse(req.body);
     
     const result = await signInUser(
       email, 
       password,
-      req.get('User-Agent'),
-      req.ip
+      req.get('User-Agent') || 'unknown',
+      req.ip || 'unknown'
     );
 
     if (!result) {

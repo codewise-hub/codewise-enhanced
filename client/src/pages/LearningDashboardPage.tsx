@@ -85,35 +85,205 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
           </div>
         </div>
 
-        {/* Learning Options Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {learningOptions.map((option) => (
-            <Card 
-              key={option.id}
-              className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105"
-              onClick={() => setLocation(option.path)}
-              data-testid={`card-${option.id}`}
-            >
-              <CardHeader className="text-center">
-                <div className={`${option.color} mb-4 flex justify-center`}>
-                  {option.icon}
-                </div>
-                <CardTitle className="text-xl">{option.title}</CardTitle>
-                <CardDescription className="text-sm">
-                  {option.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button 
-                  className="w-full" 
-                  variant="outline"
-                  data-testid={`button-${option.id}`}
-                >
-                  Start Learning
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Preview Videos Section */}
+        <div className="grid gap-8 mb-12">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              {ageGroup === '6-11' ? 'What You\'ll Learn - Quick Preview!' : 'Your Learning Journey - Preview'}
+            </h2>
+            <p className="text-gray-600 mb-8">
+              Watch these short videos to see what awaits you. Sign up to access full courses and materials!
+            </p>
+          </div>
+
+          {ageGroup === '6-11' ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Scratch Programming */}
+              <Card className="overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    🧩 Scratch Programming
+                  </CardTitle>
+                  <CardDescription>Create fun animations with drag-and-drop blocks</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="aspect-video mb-4">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src="https://www.youtube.com/embed/jXUZaf5D12A?start=0&end=60"
+                      title="Scratch Programming Preview"
+                      frameBorder="0"
+                      allowFullScreen
+                      className="rounded-lg"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600">Learn to code by moving colorful blocks around!</p>
+                </CardContent>
+              </Card>
+
+              {/* Robotics Lab */}
+              <Card className="overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    🤖 Robotics Lab
+                  </CardTitle>
+                  <CardDescription>Control robots and make LED lights dance</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="aspect-video mb-4">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src="https://www.youtube.com/embed/kKhmYXoGInc?start=0&end=60"
+                      title="Robotics Lab Preview"
+                      frameBorder="0"
+                      allowFullScreen
+                      className="rounded-lg"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600">Build and program your own robots!</p>
+                </CardContent>
+              </Card>
+
+              {/* Device Connection */}
+              <Card className="overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    🔌 Connect Your Device
+                  </CardTitle>
+                  <CardDescription>Simple setup for micro:bit and sensors</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="aspect-video mb-4">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src="https://www.youtube.com/embed/6SLd47kB7R4?start=0&end=60"
+                      title="Device Connection Preview"
+                      frameBorder="0"
+                      allowFullScreen
+                      className="rounded-lg"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600">Easy steps to connect and start coding!</p>
+                </CardContent>
+              </Card>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Python Programming */}
+              <Card className="overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    🐍 Python Programming
+                  </CardTitle>
+                  <CardDescription>Master the world's most popular language</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="aspect-video mb-4">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src="https://www.youtube.com/embed/_uQrJ0TkZlc?start=0&end=60"
+                      title="Python Programming Preview"
+                      frameBorder="0"
+                      allowFullScreen
+                      className="rounded-lg"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600">Build real applications with Python!</p>
+                </CardContent>
+              </Card>
+
+              {/* Robotics Lab */}
+              <Card className="overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    🤖 Advanced Robotics
+                  </CardTitle>
+                  <CardDescription>IoT sensors and autonomous systems</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="aspect-video mb-4">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src="https://www.youtube.com/embed/kKhmYXoGInc?start=0&end=60"
+                      title="Advanced Robotics Preview"
+                      frameBorder="0"
+                      allowFullScreen
+                      className="rounded-lg"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600">Build smart, connected devices!</p>
+                </CardContent>
+              </Card>
+
+              {/* Code Editor */}
+              <Card className="overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    💻 Professional IDE
+                  </CardTitle>
+                  <CardDescription>Code like a pro with our embedded editor</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="aspect-video mb-4">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src="https://www.youtube.com/embed/6SLd47kB7R4?start=0&end=60"
+                      title="IDE Preview"
+                      frameBorder="0"
+                      allowFullScreen
+                      className="rounded-lg"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600">Professional coding environment!</p>
+                </CardContent>
+              </Card>
+
+              {/* Prompt Engineering */}
+              <Card className="overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    🧠 AI & Prompt Engineering
+                  </CardTitle>
+                  <CardDescription>Work with AI and machine learning</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="aspect-video mb-4">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src="https://www.youtube.com/embed/dOxUroR57xs"
+                      title="Prompt Engineering Preview"
+                      frameBorder="0"
+                      allowFullScreen
+                      className="rounded-lg"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600">Learn to work with AI technology!</p>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+        </div>
+
+        {/* Sign Up Call-to-Action */}
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-8 text-white text-center mb-8">
+          <h3 className="text-2xl font-bold mb-4">Ready to Start Your Coding Journey?</h3>
+          <p className="text-lg mb-6 opacity-90">
+            Sign up now to access full courses, study materials, and start building amazing projects!
+          </p>
+          <Button 
+            size="lg" 
+            className="bg-yellow-400 text-purple-800 hover:bg-yellow-300 font-bold"
+            onClick={() => window.location.href = `/?signup=${ageGroup}`}
+          >
+            Sign Up Now - FREE!
+          </Button>
         </div>
 
         {/* Quick Stats */}

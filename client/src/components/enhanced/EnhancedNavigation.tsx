@@ -42,10 +42,10 @@ export function EnhancedNavigation({ onAuthModalOpen }: EnhancedNavigationProps 
       title: "Learning",
       icon: <BookOpen className="w-4 h-4" />,
       items: [
-        { title: "Courses", href: "/courses", description: "Age-appropriate coding courses" },
-        { title: "Robotics Lab", href: "/robotics", description: "Interactive robotics activities" },
-        { title: "AI Tutor", href: "/ai-tutor", description: "Personal coding assistant" },
-        { title: "Study Materials", href: "/materials", description: "Resources and guides" }
+        { title: "Young Coders (6-11)", href: "/learning/6-11", description: "Visual programming for kids" },
+        { title: "Teen Coders (12-17)", href: "/learning/12-17", description: "Advanced programming for teens" },
+        { title: "Courses", href: "/courses/6-11", description: "Age-appropriate coding courses" },
+        { title: "Study Materials", href: "/study-materials/6-11", description: "Resources and guides" }
       ]
     },
     {
