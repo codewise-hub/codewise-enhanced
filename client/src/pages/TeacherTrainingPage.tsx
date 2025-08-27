@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { EducatorDashboard } from "@/components/EducatorDashboard";
+import { useAuth } from "@/hooks/useAuth";
 import { 
   GraduationCap, 
   Users, 
@@ -22,6 +24,8 @@ import {
 
 export function TeacherTrainingPage() {
   const [selectedProgram, setSelectedProgram] = useState("foundation");
+  const [showEducatorDashboard, setShowEducatorDashboard] = useState(false);
+  const { user } = useAuth();
 
   const programs = {
     foundation: {
@@ -353,9 +357,16 @@ export function TeacherTrainingPage() {
                   <Button 
                     className="w-full" 
                     size="lg"
-                    onClick={() => window.open('/contact', '_blank')}
+                    onClick={() => {
+                      if (user) {
+                        setShowEducatorDashboard(true);
+                      } else {
+                        window.open('/contact', '_blank');
+                      }
+                    }}
+                    data-testid="button-enroll-now"
                   >
-                    Enroll Now
+                    {user ? 'Open Learning Dashboard' : 'Enroll Now'}
                   </Button>
                   <Button variant="outline" className="w-full">
                     Schedule Consultation
@@ -434,6 +445,11 @@ export function TeacherTrainingPage() {
           </div>
         </div>
       </section>
+
+      {/* Educator Dashboard Modal */}
+      {showEducatorDashboard && (
+        <EducatorDashboard onClose={() => setShowEducatorDashboard(false)} />
+      )}
     </div>
   );
 }

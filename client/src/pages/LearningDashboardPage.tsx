@@ -135,7 +135,7 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/kKhmYXoGInc"
+                      src="https://www.youtube.com/embed/Q6X7RUWajhA"
                       title="Advanced Robotics - What You'll Learn"
                       frameBorder="0"
                       allowFullScreen
@@ -159,7 +159,7 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/6SLd47kB7R4"
+                      src="https://www.youtube.com/embed/u2u7UJSRuko"
                       title="Device Connection - What You'll Learn"
                       frameBorder="0"
                       allowFullScreen
@@ -183,7 +183,7 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/6SLd47kB7R4"
+                      src="https://www.youtube.com/embed/YE7VzlLtp-4"
                       title="Coding Environment - What You'll Learn"
                       frameBorder="0"
                       allowFullScreen
@@ -209,14 +209,14 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/_uQrJ0TkZlc"
-                      title="Python Programming - What You'll Learn"
+                      src="https://www.youtube.com/embed/kf79hJPHq0s"
+                      title="Python Programming - Brief Explanation"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Learn Python programming to build web applications, data analysis tools, and AI systems</p>
+                  <p className="text-sm text-gray-600">Brief explanation of Python programming and what you'll learn in this course</p>
                 </CardContent>
               </Card>
 
@@ -233,14 +233,14 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/qz0aGYrrlhU"
-                      title="Web Development - What You'll Learn"
+                      src="https://www.youtube.com/embed/UB1O30fR-EE"
+                      title="Web Development - Brief Explanation"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Create responsive websites using HTML, CSS, and JavaScript with modern frameworks</p>
+                  <p className="text-sm text-gray-600">Brief explanation of web development and the technologies you'll master</p>
                 </CardContent>
               </Card>
 
@@ -257,14 +257,14 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/6SLd47kB7R4"
-                      title="Professional IDE - What You'll Learn"
+                      src="https://www.youtube.com/embed/yJw0SyKO9IU"
+                      title="Professional IDE - Brief Explanation"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Master professional coding tools including debugging, version control, and code optimization</p>
+                  <p className="text-sm text-gray-600">Brief explanation of professional coding tools and development environments</p>
                 </CardContent>
               </Card>
 
@@ -282,13 +282,13 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                       width="100%"
                       height="100%"
                       src="https://www.youtube.com/embed/dOxUroR57xs"
-                      title="AI & Prompt Engineering - What You'll Learn"
+                      title="AI & Prompt Engineering - Brief Explanation"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Learn to communicate effectively with AI systems and build intelligent applications</p>
+                  <p className="text-sm text-gray-600">Brief explanation of AI and prompt engineering concepts</p>
                 </CardContent>
               </Card>
             </div>
