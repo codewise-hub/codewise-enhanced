@@ -209,7 +209,7 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/kf79hJPHq0s"
+                      src="https://www.youtube.com/embed/x7X9w_GIm1s"
                       title="Python Programming - Brief Explanation"
                       frameBorder="0"
                       allowFullScreen
@@ -233,7 +233,7 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/UB1O30fR-EE"
+                      src="https://www.youtube.com/embed/G3e-cpL7ofc"
                       title="Web Development - Brief Explanation"
                       frameBorder="0"
                       allowFullScreen
@@ -257,7 +257,7 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/yJw0SyKO9IU"
+                      src="https://www.youtube.com/embed/DWxfNfDb4is"
                       title="Professional IDE - Brief Explanation"
                       frameBorder="0"
                       allowFullScreen

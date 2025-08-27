@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { EducatorDashboard } from "@/components/EducatorDashboard";
+import { CertificationEnrollmentModal } from "@/components/CertificationEnrollmentModal";
 import { useAuth } from "@/hooks/useAuth";
 import { 
   GraduationCap, 
@@ -25,16 +26,46 @@ import {
 export function TeacherTrainingPage() {
   const [selectedProgram, setSelectedProgram] = useState("foundation");
   const [showEducatorDashboard, setShowEducatorDashboard] = useState(false);
+  const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
+  const [selectedProgramForEnrollment, setSelectedProgramForEnrollment] = useState<string | null>(null);
   const { user } = useAuth();
+
+  const handleViewDetails = (programId: string) => {
+    setSelectedProgramForEnrollment(programId);
+    setShowEnrollmentModal(true);
+  };
+
+  const handleEnroll = (programId: string) => {
+    // Handle enrollment logic here
+    console.log('Enrolling in program:', programId);
+    setShowEnrollmentModal(false);
+    setSelectedProgramForEnrollment(null);
+    // TODO: Implement actual enrollment API call
+  };
 
   const programs = {
     foundation: {
+      id: "foundation",
       title: "Foundation Coding & Robotics Certificate",
       duration: "6 weeks",
       commitment: "3 hours/week",
       price: "R2,999",
       certification: "SACE Endorsed - 15 CPD Points",
       description: "Master the fundamentals of teaching coding and robotics in primary and secondary schools",
+      materials: "Comprehensive teaching guides and student resources",
+      prerequisites: [
+        "Basic computer literacy required",
+        "No prior programming experience needed",
+        "Access to computer/tablet for course duration",
+        "Willingness to learn new teaching methodologies"
+      ],
+      targetAudience: [
+        "Primary school teachers (Grades 4-7)",
+        "Secondary school teachers (Grades 8-12)",
+        "Technology coordinators and IT educators",
+        "Curriculum developers and education consultants",
+        "Homeschool educators and tutors"
+      ],
       outcomes: [
         "Understand computational thinking concepts",
         "Teach block-based programming effectively", 
@@ -80,16 +111,30 @@ export function TeacherTrainingPage() {
           duration: "3 hours"
         }
       ],
-      format: "Hybrid (Online + 1 In-Person Workshop)",
-      materials: "Physical robotics kit included"
+      format: "Hybrid (Online + 1 In-Person Workshop)"
     },
     advanced: {
+      id: "advanced",
       title: "Advanced STEM Integration Specialist",
       duration: "8 weeks", 
       commitment: "4 hours/week",
       price: "R4,499",
       certification: "SACE Endorsed - 25 CPD Points",
       description: "Advanced methodologies for integrating STEM education across multiple subjects and grade levels",
+      materials: "STEM toolkit and maker-space equipment guide",
+      prerequisites: [
+        "Foundation certificate or 2+ years teaching experience",
+        "Basic understanding of STEM principles",
+        "Leadership or mentoring experience preferred",
+        "Access to educational technology resources"
+      ],
+      targetAudience: [
+        "Experienced STEM educators and department heads",
+        "Curriculum coordinators and education specialists",
+        "Teacher leaders and instructional coaches", 
+        "Innovation lab coordinators",
+        "Educational consultants and trainers"
+      ],
       outcomes: [
         "Design interdisciplinary STEM projects",
         "Implement maker-space pedagogy",
@@ -147,8 +192,7 @@ export function TeacherTrainingPage() {
           duration: "4 hours"
         }
       ],
-      format: "Hybrid (Online + 2 In-Person Workshops)",
-      materials: "Extended robotics kit + 3D printing credits"
+      format: "Hybrid (Online + 2 In-Person Workshops)"
     }
   };
 
@@ -357,19 +401,18 @@ export function TeacherTrainingPage() {
                   <Button 
                     className="w-full" 
                     size="lg"
-                    onClick={() => {
-                      if (user) {
-                        setShowEducatorDashboard(true);
-                      } else {
-                        window.open('/contact', '_blank');
-                      }
-                    }}
+                    onClick={() => handleViewDetails(selectedProgram)}
                     data-testid="button-enroll-now"
                   >
-                    {user ? 'Open Learning Dashboard' : 'Enroll Now'}
+                    Enroll Now
                   </Button>
-                  <Button variant="outline" className="w-full">
-                    Schedule Consultation
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => handleViewDetails(selectedProgram)}
+                    data-testid="button-view-details"
+                  >
+                    View Details
                   </Button>
                 </div>
               </div>
@@ -445,6 +488,18 @@ export function TeacherTrainingPage() {
           </div>
         </div>
       </section>
+
+      {/* Certification Enrollment Modal */}
+      {showEnrollmentModal && selectedProgramForEnrollment && (
+        <CertificationEnrollmentModal 
+          program={programs[selectedProgramForEnrollment as keyof typeof programs]}
+          onClose={() => {
+            setShowEnrollmentModal(false);
+            setSelectedProgramForEnrollment(null);
+          }}
+          onEnroll={handleEnroll}
+        />
+      )}
 
       {/* Educator Dashboard Modal */}
       {showEducatorDashboard && (
