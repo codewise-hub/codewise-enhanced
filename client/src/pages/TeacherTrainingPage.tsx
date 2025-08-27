@@ -222,10 +222,7 @@ export function TeacherTrainingPage() {
                 <Calendar className="w-5 h-5 mr-2" />
                 View Training Calendar
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-purple-600">
-                <Download className="w-5 h-5 mr-2" />
-                Download Brochure
-              </Button>
+
             </div>
           </div>
         </div>
@@ -353,7 +350,11 @@ export function TeacherTrainingPage() {
                 </Card>
 
                 <div className="space-y-3">
-                  <Button className="w-full" size="lg">
+                  <Button 
+                    className="w-full" 
+                    size="lg"
+                    onClick={() => window.open('/contact', '_blank')}
+                  >
                     Enroll Now
                   </Button>
                   <Button variant="outline" className="w-full">

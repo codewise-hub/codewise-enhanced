@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { eq, and, gt, sql } from 'drizzle-orm';
 import { db } from './db';
-import { users, userSessions, type User, type InsertUser, type InsertUserSession } from '../shared/schema';
+import { users, userSessions, schools, type User, type InsertUser, type InsertUserSession } from '../shared/schema';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
@@ -123,8 +123,8 @@ export async function requireAuth(
 }
 
 // Create new user
-export async function createUser(userData: InsertUser & { password: string }): Promise<User> {
-  const { password, ...userDetails } = userData;
+export async function createUser(userData: InsertUser & { password: string; childName?: string; schoolName?: string }): Promise<User> {
+  const { password, childName, schoolName, ...userDetails } = userData;
   const passwordHash = await hashPassword(password);
 
   const newUser = await db
@@ -135,7 +135,47 @@ export async function createUser(userData: InsertUser & { password: string }): P
     })
     .returning();
 
-  return newUser[0];
+  const parentUser = newUser[0];
+
+  // If this is a parent signing up, create a child account
+  if (parentUser.role === 'parent' && childName) {
+    // Generate a username from child's name
+    const username = childName.toLowerCase().replace(/\s+/g, '');
+    
+    // Create the child account
+    await db
+      .insert(users)
+      .values({
+        name: childName,
+        username: username,
+        email: `${username}@${parentUser.email}`, // Unique email for child
+        role: 'student',
+        ageGroup: '6-11', // Default age group, parent can change later
+        parentId: parentUser.id,
+        packageId: parentUser.packageId,
+        subscriptionStatus: parentUser.subscriptionStatus,
+        subscriptionStart: parentUser.subscriptionStart,
+        subscriptionEnd: parentUser.subscriptionEnd,
+        passwordHash: await hashPassword(username), // Default password is their username
+        isActive: true,
+      });
+  }
+
+  // If this is a school admin, create the school record
+  if (parentUser.role === 'school_admin' && schoolName) {
+    await db
+      .insert(schools)
+      .values({
+        name: schoolName,
+        adminUserId: parentUser.id,
+        packageId: parentUser.packageId,
+        subscriptionStatus: parentUser.subscriptionStatus,
+        subscriptionStart: parentUser.subscriptionStart,
+        subscriptionEnd: parentUser.subscriptionEnd,
+      });
+  }
+
+  return parentUser;
 }
 
 // Sign in user

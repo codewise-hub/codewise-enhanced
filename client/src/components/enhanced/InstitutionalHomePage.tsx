@@ -142,7 +142,7 @@ export function InstitutionalHomePage({ onStudentModeSwitch, onAuthModalOpen }: 
                 <Link href="/contact">
                   <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-purple-800">
                     <School className="w-5 h-5 mr-2" />
-                    Schools: Get Demo
+                    Contact Us
                   </Button>
                 </Link>
               </div>
@@ -182,21 +182,7 @@ export function InstitutionalHomePage({ onStudentModeSwitch, onAuthModalOpen }: 
         </div>
       </section>
 
-      {/* Social Proof */}
-      <section className="py-8 bg-gray-50 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-6">
-            <p className="text-gray-600">Trusted by leading schools across South Africa</p>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-            {partnerSchools.slice(0, 6).map((school, index) => (
-              <div key={index} className="text-gray-700 font-medium">
-                {school}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Features Section */}
       <section className="py-20">

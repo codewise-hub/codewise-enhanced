@@ -42,9 +42,9 @@ export function AuthModal({ isOpen, mode: initialMode, initialRole, initialAgeGr
           formData.password, 
           formData.name, 
           formData.role,
-          undefined, // ageGroup not needed for parent
-          undefined, // childName handled separately
-          undefined, // schoolName not needed
+          formData.role === 'student' ? formData.ageGroup : undefined,
+          formData.role === 'parent' ? formData.childName : undefined,
+          formData.role === 'school_admin' ? formData.schoolName : undefined,
           (formData.role === 'parent' || formData.role === 'school_admin') ? formData.packageId : undefined
         );
         onSuccess('Successfully signed up!');
@@ -127,6 +127,39 @@ export function AuthModal({ isOpen, mode: initialMode, initialRole, initialAgeGr
                   data-testid="input-name"
                 />
               </div>
+
+              {formData.role === 'parent' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Child's Name (will be used as username)
+                  </label>
+                  <input 
+                    type="text"
+                    required
+                    value={formData.childName}
+                    onChange={(e) => setFormData({...formData, childName: e.target.value})}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter child's full name"
+                    data-testid="input-child-name"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">This name will become your child's username for logging in. Parent and child accounts will be automatically linked.</p>
+                </div>
+              )}
+
+              {formData.role === 'school_admin' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">School Name</label>
+                  <input 
+                    type="text"
+                    required
+                    value={formData.schoolName}
+                    onChange={(e) => setFormData({...formData, schoolName: e.target.value})}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter school name"
+                    data-testid="input-school-name"
+                  />
+                </div>
+              )}
             </>
           )}
 

@@ -53,8 +53,7 @@ export function EnhancedNavigation({ onAuthModalOpen }: EnhancedNavigationProps 
       icon: <School className="w-4 h-4" />,
       items: [
         { title: "Curriculum Integration", href: "/curriculum", description: "CAPS-aligned learning pathways" },
-        { title: "Teacher Training", href: "/teacher-training", description: "Professional development programs" },
-        { title: "School Dashboard", href: "/school-admin", description: "Management and analytics" }
+        { title: "Teacher Training", href: "/teacher-training", description: "Professional development programs" }
       ]
     },
     {

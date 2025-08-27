@@ -97,7 +97,7 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
           </div>
 
           {ageGroup === '6-11' ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Scratch Programming */}
               <Card className="overflow-hidden">
                 <CardHeader>
@@ -111,38 +111,38 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/jXUZaf5D12A?start=0&end=60"
-                      title="Scratch Programming Preview"
+                      src="https://www.youtube.com/embed/jXUZaf5D12A"
+                      title="Scratch Programming - What You'll Learn"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Learn to code by moving colorful blocks around!</p>
+                  <p className="text-sm text-gray-600">Learn visual programming with colorful drag-and-drop blocks to create games and animations</p>
                 </CardContent>
               </Card>
 
-              {/* Robotics Lab */}
+              {/* Advanced Robotics */}
               <Card className="overflow-hidden">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
-                    🤖 Robotics Lab
+                    🤖 Advanced Robotics
                   </CardTitle>
-                  <CardDescription>Control robots and make LED lights dance</CardDescription>
+                  <CardDescription>Build smart robots with sensors and motors</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="aspect-video mb-4">
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/kKhmYXoGInc?start=0&end=60"
-                      title="Robotics Lab Preview"
+                      src="https://www.youtube.com/embed/kKhmYXoGInc"
+                      title="Advanced Robotics - What You'll Learn"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Build and program your own robots!</p>
+                  <p className="text-sm text-gray-600">Build and program advanced robots with IoT sensors and smart controls</p>
                 </CardContent>
               </Card>
 
@@ -152,21 +152,45 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                   <CardTitle className="text-lg flex items-center gap-2">
                     🔌 Connect Your Device
                   </CardTitle>
-                  <CardDescription>Simple setup for micro:bit and sensors</CardDescription>
+                  <CardDescription>Easy setup for micro:bit and sensors</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="aspect-video mb-4">
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/6SLd47kB7R4?start=0&end=60"
-                      title="Device Connection Preview"
+                      src="https://www.youtube.com/embed/6SLd47kB7R4"
+                      title="Device Connection - What You'll Learn"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Easy steps to connect and start coding!</p>
+                  <p className="text-sm text-gray-600">Learn how to connect and set up your micro:bit and sensors for coding projects</p>
+                </CardContent>
+              </Card>
+
+              {/* Embedded IDE */}
+              <Card className="overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    💻 Coding Environment
+                  </CardTitle>
+                  <CardDescription>Professional coding tools made simple</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="aspect-video mb-4">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src="https://www.youtube.com/embed/6SLd47kB7R4"
+                      title="Coding Environment - What You'll Learn"
+                      frameBorder="0"
+                      allowFullScreen
+                      className="rounded-lg"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600">Use our kid-friendly coding environment with helpful hints and colorful interface</p>
                 </CardContent>
               </Card>
             </div>
@@ -178,69 +202,69 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                   <CardTitle className="text-lg flex items-center gap-2">
                     🐍 Python Programming
                   </CardTitle>
-                  <CardDescription>Master the world's most popular language</CardDescription>
+                  <CardDescription>Master the world's most popular programming language</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="aspect-video mb-4">
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/_uQrJ0TkZlc?start=0&end=60"
-                      title="Python Programming Preview"
+                      src="https://www.youtube.com/embed/_uQrJ0TkZlc"
+                      title="Python Programming - What You'll Learn"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Build real applications with Python!</p>
+                  <p className="text-sm text-gray-600">Learn Python programming to build web applications, data analysis tools, and AI systems</p>
                 </CardContent>
               </Card>
 
-              {/* Robotics Lab */}
+              {/* Web Development */}
               <Card className="overflow-hidden">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
-                    🤖 Advanced Robotics
+                    🌐 Web Development
                   </CardTitle>
-                  <CardDescription>IoT sensors and autonomous systems</CardDescription>
+                  <CardDescription>Build modern websites and web applications</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="aspect-video mb-4">
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/kKhmYXoGInc?start=0&end=60"
-                      title="Advanced Robotics Preview"
+                      src="https://www.youtube.com/embed/qz0aGYrrlhU"
+                      title="Web Development - What You'll Learn"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Build smart, connected devices!</p>
+                  <p className="text-sm text-gray-600">Create responsive websites using HTML, CSS, and JavaScript with modern frameworks</p>
                 </CardContent>
               </Card>
 
-              {/* Code Editor */}
+              {/* Professional IDE */}
               <Card className="overflow-hidden">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     💻 Professional IDE
                   </CardTitle>
-                  <CardDescription>Code like a pro with our embedded editor</CardDescription>
+                  <CardDescription>Code like a professional developer</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="aspect-video mb-4">
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/6SLd47kB7R4?start=0&end=60"
-                      title="IDE Preview"
+                      src="https://www.youtube.com/embed/6SLd47kB7R4"
+                      title="Professional IDE - What You'll Learn"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Professional coding environment!</p>
+                  <p className="text-sm text-gray-600">Master professional coding tools including debugging, version control, and code optimization</p>
                 </CardContent>
               </Card>
 
@@ -250,7 +274,7 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                   <CardTitle className="text-lg flex items-center gap-2">
                     🧠 AI & Prompt Engineering
                   </CardTitle>
-                  <CardDescription>Work with AI and machine learning</CardDescription>
+                  <CardDescription>Work with artificial intelligence systems</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="aspect-video mb-4">
@@ -258,13 +282,13 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                       width="100%"
                       height="100%"
                       src="https://www.youtube.com/embed/dOxUroR57xs"
-                      title="Prompt Engineering Preview"
+                      title="AI & Prompt Engineering - What You'll Learn"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Learn to work with AI technology!</p>
+                  <p className="text-sm text-gray-600">Learn to communicate effectively with AI systems and build intelligent applications</p>
                 </CardContent>
               </Card>
             </div>

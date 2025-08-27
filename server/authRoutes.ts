@@ -48,7 +48,11 @@ router.post('/signup', async (req, res) => {
     }
 
     // Create user
-    const user = await createUser(data);
+    const user = await createUser({
+      ...data,
+      childName: req.body.childName,
+      schoolName: req.body.schoolName
+    });
     
     // Sign in user immediately after signup
     const signInResult = await signInUser(
