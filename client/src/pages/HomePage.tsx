@@ -22,7 +22,12 @@ export function HomePage({ onAuthModalOpen }: HomePageProps) {
 
   // Show institutional homepage by default for professional appeal
   if (viewMode === 'institutional') {
-    return <InstitutionalHomePage />;
+    return (
+      <InstitutionalHomePage 
+        onStudentModeSwitch={() => setViewMode('student')}
+        onAuthModalOpen={onAuthModalOpen}
+      />
+    );
   }
 
   // Show course explanation page when requested

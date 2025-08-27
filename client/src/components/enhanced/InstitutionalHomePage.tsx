@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,8 +25,14 @@ import {
   Mail
 } from "lucide-react";
 
-export function InstitutionalHomePage() {
+interface InstitutionalHomePageProps {
+  onStudentModeSwitch?: () => void;
+  onAuthModalOpen?: (mode: 'signin' | 'signup', role?: string, ageGroup?: string) => void;
+}
+
+export function InstitutionalHomePage({ onStudentModeSwitch, onAuthModalOpen }: InstitutionalHomePageProps) {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [, setLocation] = useLocation();
 
   const stats = [
     { number: "300+", label: "Partner Schools", icon: <School className="w-6 h-6" /> },
@@ -283,7 +289,10 @@ export function InstitutionalHomePage() {
                     <span>Progress badges and rewards</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                <Button 
+                  className="w-full bg-purple-600 hover:bg-purple-700"
+                  onClick={() => setLocation('/learning/6-11')}
+                >
                   Start Young Coder Journey
                 </Button>
               </CardContent>
@@ -324,7 +333,10 @@ export function InstitutionalHomePage() {
                     <span>AI & machine learning basics</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-teal-600 hover:bg-teal-700">
+                <Button 
+                  className="w-full bg-teal-600 hover:bg-teal-700"
+                  onClick={() => setLocation('/learning/12-17')}
+                >
                   Start Teen Coder Journey
                 </Button>
               </CardContent>
