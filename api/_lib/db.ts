@@ -1,5 +1,6 @@
 import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
+import { sql } from 'drizzle-orm';
 import ws from "ws";
 import * as schema from "../../shared/schema";
 
@@ -40,4 +41,17 @@ try {
   throw error;
 }
 
-export { pool, db };
+// Helper function for raw SQL execution
+export async function executeSQL(query: string, params: any[] = []) {
+  try {
+    console.log('Executing SQL:', query.substring(0, 100) + (query.length > 100 ? '...' : ''));
+    const result = await db.execute(sql.raw(query, ...params));
+    console.log('SQL execution successful');
+    return result;
+  } catch (error) {
+    console.error('SQL execution failed:', error);
+    throw error;
+  }
+}
+
+export { pool, db, sql };
