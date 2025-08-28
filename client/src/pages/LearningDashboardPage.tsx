@@ -135,14 +135,14 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/Q6X7RUWajhA"
-                      title="Advanced Robotics - What You'll Learn"
+                      src="https://www.youtube.com/embed/HCl-dLTaYsY"
+                      title="Advanced Robotics - Introduction for Kids"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Build and program advanced robots with IoT sensors and smart controls</p>
+                  <p className="text-sm text-gray-600">Introduction to advanced robotics concepts for young learners</p>
                 </CardContent>
               </Card>
 
@@ -209,14 +209,14 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/x7X9w_GIm1s"
-                      title="Python Programming - Brief Explanation"
+                      src="https://www.youtube.com/embed/kf79hJPHq0s"
+                      title="Python Programming - 1 Minute Intro"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Brief explanation of Python programming and what you'll learn in this course</p>
+                  <p className="text-sm text-gray-600">Quick 1-minute introduction to Python programming fundamentals</p>
                 </CardContent>
               </Card>
 
@@ -233,14 +233,14 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/G3e-cpL7ofc"
-                      title="Web Development - Brief Explanation"
+                      src="https://www.youtube.com/embed/UB1O30fR-EE"
+                      title="Web Development - 1 Minute Intro"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Brief explanation of web development and the technologies you'll master</p>
+                  <p className="text-sm text-gray-600">Quick 1-minute overview of web development basics</p>
                 </CardContent>
               </Card>
 
@@ -257,14 +257,14 @@ export function LearningDashboardPage({ ageGroup }: LearningDashboardPageProps) 
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/DWxfNfDb4is"
-                      title="Professional IDE - Brief Explanation"
+                      src="https://www.youtube.com/embed/yJw0SyKO9IU"
+                      title="Professional IDE - 1 Minute Intro"
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Brief explanation of professional coding tools and development environments</p>
+                  <p className="text-sm text-gray-600">Quick 1-minute intro to professional coding tools</p>
                 </CardContent>
               </Card>
 
