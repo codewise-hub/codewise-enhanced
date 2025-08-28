@@ -185,34 +185,66 @@ export async function signInUser(
   userAgent?: string,
   ipAddress?: string
 ): Promise<{ user: User; sessionToken: string } | null> {
-  // Find user by email
-  const userResult = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
+  try {
+    console.log(`Attempting to find user with email: ${email}`);
+    
+    // Find user by email
+    const userResult = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
 
-  if (userResult.length === 0) {
-    return null;
+    if (userResult.length === 0) {
+      console.log(`No user found with email: ${email}`);
+      return null;
+    }
+
+    const user = userResult[0];
+    console.log(`User found: ${user.id}, checking password`);
+
+    // Verify password
+    if (!user.passwordHash) {
+      console.log(`No password hash for user: ${user.id}`);
+      return null;
+    }
+    
+    const passwordValid = await verifyPassword(password, user.passwordHash);
+    if (!passwordValid) {
+      console.log(`Invalid password for user: ${user.id}`);
+      return null;
+    }
+    
+    console.log(`Password verified for user: ${user.id}`);
+
+    // Check if user is active
+    if (!user.isActive) {
+      console.log(`User account is inactive: ${user.id}`);
+      return null;
+    }
+
+    // Update last login
+    try {
+      await db
+        .update(users)
+        .set({ lastLoginAt: new Date() })
+        .where(eq(users.id, user.id));
+      console.log(`Updated last login for user: ${user.id}`);
+    } catch (updateError) {
+      console.error(`Failed to update last login for user ${user.id}:`, updateError);
+      // Continue even if this fails
+    }
+
+    // Create session
+    console.log(`Creating session for user: ${user.id}`);
+    const sessionToken = await createUserSession(user.id, userAgent, ipAddress);
+    console.log(`Session created successfully for user: ${user.id}`);
+
+    return { user, sessionToken };
+  } catch (error) {
+    console.error('Error in signInUser function:', error);
+    throw error;
   }
-
-  const user = userResult[0];
-
-  // Verify password
-  if (!user.passwordHash || !(await verifyPassword(password, user.passwordHash))) {
-    return null;
-  }
-
-  // Update last login
-  await db
-    .update(users)
-    .set({ lastLoginAt: new Date() })
-    .where(eq(users.id, user.id));
-
-  // Create session
-  const sessionToken = await createUserSession(user.id, userAgent, ipAddress);
-
-  return { user, sessionToken };
 }
 
 // Sign out user
