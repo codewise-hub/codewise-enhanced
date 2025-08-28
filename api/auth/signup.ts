@@ -36,8 +36,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log('Signup attempt received:', { 
       email: req.body?.email, 
       role: req.body?.role,
-      hasPassword: !!req.body?.password 
+      hasPassword: !!req.body?.password,
+      bodyKeys: Object.keys(req.body || {})
     });
+
+    // Test database connectivity first
+    console.log('Testing database connection...');
+    try {
+      const testQuery = await db.select().from(users).limit(1);
+      console.log('Database connection test successful');
+    } catch (dbTestError: any) {
+      console.error('Database connection test failed:', dbTestError);
+      return res.status(500).json({ 
+        error: 'Database connection failed during test',
+        details: process.env.NODE_ENV === 'development' ? dbTestError.message : 'Database connection error'
+      });
+    }
 
     const data = signUpSchema.parse(req.body);
     console.log('Signup data validated successfully');
