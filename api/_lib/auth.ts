@@ -18,23 +18,60 @@ export async function createUser(userData: {
   schoolName?: string;
   packageId?: string;
 }): Promise<User> {
-  const hashedPassword = await bcrypt.hash(userData.password, 12);
-  
-  const [newUser] = await db
-    .insert(users)
-    .values({
+  try {
+    console.log('API: Starting createUser with data:', {
+      email: userData.email,
+      name: userData.name,
+      role: userData.role,
+      ageGroup: userData.ageGroup,
+      packageId: userData.packageId,
+      hasPassword: !!userData.password
+    });
+
+    if (!userData.password) {
+      throw new Error('Password is required');
+    }
+
+    console.log('API: Hashing password...');
+    const hashedPassword = await bcrypt.hash(userData.password, 12);
+    console.log('API: Password hashed successfully');
+    
+    const insertData = {
       email: userData.email,
       name: userData.name,
       passwordHash: hashedPassword,
       role: userData.role as any,
       ageGroup: userData.ageGroup as any,
       packageId: userData.packageId,
-      subscriptionStatus: 'pending',
+      subscriptionStatus: 'pending' as const,
       isActive: true,
-    })
-    .returning();
+    };
+    
+    console.log('API: Inserting user into database with data:', {
+      ...insertData,
+      passwordHash: '[HIDDEN]'
+    });
+    
+    const [newUser] = await db
+      .insert(users)
+      .values(insertData)
+      .returning();
 
-  return newUser;
+    if (!newUser) {
+      throw new Error('Failed to create user - no data returned from database');
+    }
+
+    console.log('API: User created successfully:', {
+      id: newUser.id,
+      email: newUser.email,
+      role: newUser.role
+    });
+
+    return newUser;
+  } catch (error) {
+    console.error('API: Error in createUser:', error);
+    throw error;
+  }
 }
 
 // Authenticate user and create session
