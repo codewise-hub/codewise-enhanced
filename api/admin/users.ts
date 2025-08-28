@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { Pool } from '@neondatabase/serverless';
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+import { db } from '../_lib/db';
+import { users } from '../../shared/schema';
+import { desc } from 'drizzle-orm';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
@@ -9,21 +9,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // For now, we'll just return mock data since the actual implementation would require
-    // authentication middleware and proper database queries
-    const client = await pool.connect();
+    console.log('Admin users endpoint called');
     
-    const result = await client.query(`
-      SELECT id, email, name, role, "ageGroup", "createdAt"
-      FROM users 
-      ORDER BY "createdAt" DESC
-    `);
+    // Check environment variables
+    if (!process.env.DATABASE_URL) {
+      console.error('Missing DATABASE_URL environment variable');
+      return res.status(500).json({ error: 'Database configuration error' });
+    }
     
-    client.release();
+    console.log('Fetching users from database...');
+    const allUsers = await db
+      .select({
+        id: users.id,
+        email: users.email,
+        name: users.name,
+        role: users.role,
+        ageGroup: users.ageGroup,
+        createdAt: users.createdAt
+      })
+      .from(users)
+      .orderBy(desc(users.createdAt));
     
-    return res.status(200).json(result.rows);
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    return res.status(500).json({ error: 'Failed to fetch users' });
+    console.log(`Found ${allUsers.length} users`);
+    return res.status(200).json(allUsers);
+  } catch (error: any) {
+    console.error('Error fetching users:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    
+    return res.status(500).json({ 
+      error: 'Failed to fetch users',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 }
