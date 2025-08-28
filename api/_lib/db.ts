@@ -20,18 +20,24 @@ const dbUrl = process.env.DATABASE_URL;
 const maskedUrl = dbUrl.replace(/:\/\/([^:]+):([^@]+)@/, '://***:***@');
 console.log(`API: Attempting to connect to database: ${maskedUrl}`);
 
+// Create pool and database connection
+let pool: Pool;
+let db: ReturnType<typeof drizzle>;
+
 try {
-  export const pool = new Pool({ 
+  pool = new Pool({ 
     connectionString: process.env.DATABASE_URL,
     // Add connection timeout and retry options for better error handling
     connectionTimeoutMillis: 10000, // 10 second timeout
     idleTimeoutMillis: 30000, // 30 second idle timeout
   });
   
-  export const db = drizzle({ client: pool, schema });
+  db = drizzle({ client: pool, schema });
   
   console.log('API: Database connection pool created successfully');
 } catch (error) {
   console.error('API: Failed to create database connection pool:', error);
   throw error;
 }
+
+export { pool, db };
