@@ -6,7 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
+import { CertificationEnrollmentModal } from "@/components/CertificationEnrollmentModal";
 import { 
   Award, 
   GraduationCap, 
@@ -30,6 +32,10 @@ export function CertificationHub() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("browse");
   const [selectedCertification, setSelectedCertification] = useState<string | null>(null);
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
+  const [selectedCertForDetails, setSelectedCertForDetails] = useState<any>(null);
+  const [selectedCertForEnrollment, setSelectedCertForEnrollment] = useState<any>(null);
 
   const certifications = [
     {
@@ -238,6 +244,16 @@ export function CertificationHub() {
     return styles[color as keyof typeof styles] || styles.blue;
   };
 
+  const handleViewDetails = (certification: any) => {
+    setSelectedCertForDetails(certification);
+    setShowDetailsDialog(true);
+  };
+
+  const handleEnrollNow = (certification: any) => {
+    setSelectedCertForEnrollment(certification);
+    setShowEnrollmentModal(true);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -361,11 +377,18 @@ export function CertificationHub() {
                             <span className="font-medium">Prerequisites:</span> {cert.prerequisites}
                           </div>
                           <div className="flex items-center space-x-3">
-                            <Button variant="outline" size="sm">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => handleViewDetails(cert)}
+                            >
                               <Eye className="w-4 h-4 mr-2" />
                               View Details
                             </Button>
-                            <Button size="sm">
+                            <Button 
+                              size="sm" 
+                              onClick={() => handleEnrollNow(cert)}
+                            >
                               <Award className="w-4 h-4 mr-2" />
                               Enroll Now
                             </Button>
@@ -515,6 +538,132 @@ export function CertificationHub() {
           </Card>
         </div>
       </div>
+
+      {/* View Details Dialog */}
+      <Dialog open={showDetailsDialog} onOpenChange={setShowDetailsDialog}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          {selectedCertForDetails && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center space-x-3">
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xl border-2 ${getBadgeStyle(selectedCertForDetails.color)}`}>
+                    {selectedCertForDetails.badge}
+                  </div>
+                  <div>
+                    <div className="text-xl">{selectedCertForDetails.title}</div>
+                    <div className="text-sm text-gray-500">{selectedCertForDetails.level} • {selectedCertForDetails.duration} • {selectedCertForDetails.cpd}</div>
+                  </div>
+                </DialogTitle>
+                <DialogDescription className="text-base">
+                  {selectedCertForDetails.description}
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="space-y-6 mt-6">
+                {/* Complete Modules List */}
+                <div>
+                  <h4 className="font-semibold text-lg mb-4 flex items-center">
+                    <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
+                    Course Modules ({selectedCertForDetails.modules.length} modules)
+                  </h4>
+                  <div className="space-y-3">
+                    {selectedCertForDetails.modules.map((module: any, idx: number) => (
+                      <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm font-medium text-blue-700">
+                            {idx + 1}
+                          </div>
+                          <div>
+                            <div className="font-medium">{module.title}</div>
+                            <div className="text-sm text-gray-500">Duration: {module.duration}</div>
+                          </div>
+                        </div>
+                        <Badge variant={module.completed ? "default" : "secondary"}>
+                          {module.completed ? "Completed" : "Available"}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Complete Learning Outcomes */}
+                <div>
+                  <h4 className="font-semibold text-lg mb-4 flex items-center">
+                    <Target className="w-5 h-5 mr-2 text-green-600" />
+                    Learning Outcomes
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {selectedCertForDetails.outcomes.map((outcome: string, idx: number) => (
+                      <div key={idx} className="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
+                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{outcome}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Skills Developed */}
+                <div>
+                  <h4 className="font-semibold text-lg mb-4 flex items-center">
+                    <Code className="w-5 h-5 mr-2 text-purple-600" />
+                    Skills You'll Develop
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-2">
+                    {selectedCertForDetails.skills.map((skill: string, idx: number) => (
+                      <div key={idx} className="flex items-center space-x-2 p-2 bg-purple-50 rounded">
+                        <Brain className="w-4 h-4 text-purple-600" />
+                        <span className="text-sm">{skill}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Prerequisites & Next Level */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="p-4 border rounded-lg">
+                    <h5 className="font-medium text-gray-900 mb-2">Prerequisites</h5>
+                    <p className="text-sm text-gray-600">{selectedCertForDetails.prerequisites}</p>
+                  </div>
+                  {selectedCertForDetails.nextLevel && (
+                    <div className="p-4 border rounded-lg">
+                      <h5 className="font-medium text-gray-900 mb-2">Next Level</h5>
+                      <p className="text-sm text-gray-600">Advance to: {certifications.find(c => c.id === selectedCertForDetails.nextLevel)?.title || 'Advanced Program'}</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between pt-4 border-t">
+                  <div className="text-2xl font-bold text-green-600">{selectedCertForDetails.price}</div>
+                  <div className="flex space-x-3">
+                    <Button variant="outline" onClick={() => setShowDetailsDialog(false)}>
+                      Close
+                    </Button>
+                    <Button onClick={() => {
+                      setShowDetailsDialog(false);
+                      handleEnrollNow(selectedCertForDetails);
+                    }}>
+                      <Award className="w-4 h-4 mr-2" />
+                      Enroll Now
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Enrollment Modal */}
+      {showEnrollmentModal && selectedCertForEnrollment && (
+        <CertificationEnrollmentModal
+          isOpen={showEnrollmentModal}
+          onClose={() => {
+            setShowEnrollmentModal(false);
+            setSelectedCertForEnrollment(null);
+          }}
+          certification={selectedCertForEnrollment}
+        />
+      )}
     </div>
   );
 }

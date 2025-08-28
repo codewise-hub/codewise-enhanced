@@ -44,31 +44,62 @@ export async function signInUser(
   userAgent?: string,
   ipAddress?: string
 ): Promise<{ user: User; sessionToken: string } | null> {
-  const [user] = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
+  try {
+    console.log(`API: Attempting to find user with email: ${email}`);
+    
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
 
-  if (!user || !user.isActive) {
-    return null;
+    if (!user) {
+      console.log(`API: No user found with email: ${email}`);
+      return null;
+    }
+    
+    if (!user.isActive) {
+      console.log(`API: User account is inactive: ${user.id}`);
+      return null;
+    }
+    
+    console.log(`API: User found: ${user.id}, checking password`);
+
+    if (!user.passwordHash) {
+      console.log(`API: No password hash for user: ${user.id}`);
+      return null;
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+    if (!isValidPassword) {
+      console.log(`API: Invalid password for user: ${user.id}`);
+      return null;
+    }
+    
+    console.log(`API: Password verified for user: ${user.id}`);
+
+    // Update last login
+    try {
+      await db
+        .update(users)
+        .set({ lastLoginAt: new Date() })
+        .where(eq(users.id, user.id));
+      console.log(`API: Updated last login for user: ${user.id}`);
+    } catch (updateError) {
+      console.error(`API: Failed to update last login for user ${user.id}:`, updateError);
+      // Continue even if this fails
+    }
+
+    // Create session token
+    console.log(`API: Creating session for user: ${user.id}`);
+    const sessionToken = await createUserSession(user.id, userAgent, ipAddress);
+    console.log(`API: Session created successfully for user: ${user.id}`);
+
+    return { user, sessionToken };
+  } catch (error) {
+    console.error('API: Error in signInUser function:', error);
+    throw error;
   }
-
-  const isValidPassword = await bcrypt.compare(password, user.passwordHash || '');
-  if (!isValidPassword) {
-    return null;
-  }
-
-  // Update last login
-  await db
-    .update(users)
-    .set({ lastLoginAt: new Date() })
-    .where(eq(users.id, user.id));
-
-  // Create session token
-  const sessionToken = await createUserSession(user.id, userAgent, ipAddress);
-
-  return { user, sessionToken };
 }
 
 // Create user session
@@ -77,19 +108,30 @@ export async function createUserSession(
   userAgent?: string,
   ipAddress?: string
 ): Promise<string> {
-  const sessionToken = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
-  
-  await db
-    .insert(userSessions)
-    .values({
-      userId,
-      sessionToken,
-      userAgent,
-      ipAddress,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-    });
-
-  return sessionToken;
+  try {
+    if (!JWT_SECRET || JWT_SECRET === 'fallback-secret-key') {
+      console.warn('API: Using fallback JWT secret - this is not secure for production!');
+    }
+    
+    const sessionToken = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
+    console.log(`API: Generated session token for user: ${userId}`);
+    
+    await db
+      .insert(userSessions)
+      .values({
+        userId,
+        sessionToken,
+        userAgent,
+        ipAddress,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      });
+    
+    console.log(`API: Session inserted into database for user: ${userId}`);
+    return sessionToken;
+  } catch (error) {
+    console.error('API: Error creating user session:', error);
+    throw error;
+  }
 }
 
 // Get user by session token

@@ -91,6 +91,8 @@ var schools = pgTable("schools", {
 var users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   email: text("email").notNull().unique(),
+  username: text("username").unique(),
+  // for children created by parents
   passwordHash: text("password_hash"),
   name: text("name").notNull(),
   role: text("role").notNull(),
@@ -106,7 +108,7 @@ var users = pgTable("users", {
   // School association
   schoolId: varchar("school_id").references(() => schools.id),
   // Parent-child relationship
-  parentUserId: varchar("parent_user_id"),
+  parentId: varchar("parent_id"),
   // references users.id for parent linking
   // Additional info
   grade: text("grade"),
@@ -383,13 +385,44 @@ async function requireAuth(req, res, next) {
   }
 }
 async function createUser(userData) {
-  const { password, ...userDetails } = userData;
+  const { password, childName, schoolName, ...userDetails } = userData;
   const passwordHash = await hashPassword(password);
   const newUser = await db.insert(users).values({
     ...userDetails,
     passwordHash
   }).returning();
-  return newUser[0];
+  const parentUser = newUser[0];
+  if (parentUser.role === "parent" && childName) {
+    const username = childName.toLowerCase().replace(/\s+/g, "");
+    await db.insert(users).values({
+      name: childName,
+      username,
+      email: `${username}@${parentUser.email}`,
+      // Unique email for child
+      role: "student",
+      ageGroup: "6-11",
+      // Default age group, parent can change later
+      parentId: parentUser.id,
+      packageId: parentUser.packageId,
+      subscriptionStatus: parentUser.subscriptionStatus,
+      subscriptionStart: parentUser.subscriptionStart,
+      subscriptionEnd: parentUser.subscriptionEnd,
+      passwordHash: await hashPassword(username),
+      // Default password is their username
+      isActive: true
+    });
+  }
+  if (parentUser.role === "school_admin" && schoolName) {
+    await db.insert(schools).values({
+      name: schoolName,
+      adminUserId: parentUser.id,
+      packageId: parentUser.packageId,
+      subscriptionStatus: parentUser.subscriptionStatus,
+      subscriptionStart: parentUser.subscriptionStart,
+      subscriptionEnd: parentUser.subscriptionEnd
+    });
+  }
+  return parentUser;
 }
 async function signInUser(email, password, userAgent, ipAddress) {
   const userResult = await db.select().from(users).where(eq(users.email, email)).limit(1);
@@ -431,7 +464,11 @@ router.post("/signup", async (req, res) => {
     if (existingUser.length > 0) {
       return res.status(400).json({ error: "User already exists" });
     }
-    const user = await createUser(data);
+    const user = await createUser({
+      ...data,
+      childName: req.body.childName,
+      schoolName: req.body.schoolName
+    });
     const signInResult = await signInUser(
       data.email,
       data.password,
@@ -444,7 +481,7 @@ router.post("/signup", async (req, res) => {
     res.cookie("sessionToken", signInResult.sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1e3
       // 7 days
     });
@@ -460,12 +497,13 @@ router.post("/signup", async (req, res) => {
 });
 router.post("/signin", async (req, res) => {
   try {
+    console.log("Sign in attempt for:", req.body?.email);
     const { email, password } = signInSchema.parse(req.body);
     const result = await signInUser(
       email,
       password,
-      req.get("User-Agent"),
-      req.ip
+      req.get("User-Agent") || "unknown",
+      req.ip || "unknown"
     );
     if (!result) {
       return res.status(401).json({ error: "Invalid email or password" });
@@ -473,7 +511,7 @@ router.post("/signin", async (req, res) => {
     res.cookie("sessionToken", result.sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1e3
       // 7 days
     });
@@ -549,6 +587,120 @@ router2.get("/packages/:id", async (req, res) => {
   }
 });
 var packageRoutes_default = router2;
+
+// server/aiRoutes.ts
+import { Router as Router3 } from "express";
+
+// server/openai.ts
+import { OpenAI } from "openai";
+var openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+async function generateAIResponse(messages) {
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages,
+      max_tokens: 500,
+      temperature: 0.7
+    });
+    return completion.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response at the moment.";
+  } catch (error) {
+    console.error("OpenAI API error:", error);
+    throw new Error("Failed to generate AI response");
+  }
+}
+function createSystemPrompt(context) {
+  const basePrompt = "You are CodewiseBot, a friendly AI tutor specializing in coding education for young learners aged 6-17. You help students learn programming concepts, solve coding problems, and build exciting projects.";
+  const contextPrompts = {
+    coding: "Focus on explaining programming concepts clearly, providing code examples, and encouraging best practices. Use age-appropriate language and relate concepts to real-world examples.",
+    robotics: "Help students understand robotics concepts, microcontroller programming (especially micro:bit), sensor integration, and physical computing. Explain how code controls hardware.",
+    general: "Assist with general coding questions, project ideas, learning resources, and educational guidance. Be encouraging and supportive."
+  };
+  return `${basePrompt}
+
+${contextPrompts[context]}
+
+Always be encouraging, use simple language appropriate for the student's age, and provide practical examples when possible.`;
+}
+
+// server/aiRoutes.ts
+var router3 = Router3();
+router3.post("/ai/chat", async (req, res) => {
+  try {
+    const { message, context = "general", ageGroup = "12-17" } = req.body;
+    if (!message || typeof message !== "string") {
+      return res.status(400).json({ error: "Message is required" });
+    }
+    const systemPrompt = createSystemPrompt(context);
+    const messages = [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: message }
+    ];
+    if (ageGroup === "6-11") {
+      messages[0].content += "\n\nRemember: This is a young learner (ages 6-11). Use very simple language, visual examples, and encourage creativity. Focus on block-based programming concepts.";
+    } else {
+      messages[0].content += "\n\nThis is a teen learner (ages 12-17). You can use more technical terms but still keep explanations clear and engaging.";
+    }
+    const response = await generateAIResponse(messages);
+    res.json({
+      response,
+      context,
+      suggestions: [
+        "Can you explain that differently?",
+        "Show me an example",
+        "What should I learn next?",
+        "How can I practice this?"
+      ]
+    });
+  } catch (error) {
+    console.error("AI chat error:", error);
+    res.status(500).json({
+      error: "Failed to generate AI response",
+      fallback: "I'm having trouble connecting to my AI brain right now. Try asking your question again in a moment, or reach out to your teacher for help!"
+    });
+  }
+});
+router3.post("/ai/help", async (req, res) => {
+  try {
+    const { topic, difficulty = "beginner", ageGroup = "12-17" } = req.body;
+    if (!topic) {
+      return res.status(400).json({ error: "Topic is required" });
+    }
+    const helpMessage = `Can you help me understand ${topic}? I'm a ${difficulty} level student.`;
+    const systemPrompt = createSystemPrompt("coding");
+    const messages = [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: helpMessage }
+    ];
+    if (ageGroup === "6-11") {
+      messages[0].content += "\n\nThis is a young learner. Use simple language, visual analogies, and relate to things kids understand. Focus on the fun aspects of programming.";
+    }
+    if (difficulty === "beginner") {
+      messages[0].content += "\n\nThis student is just starting. Explain fundamentals clearly and provide encouragement.";
+    } else if (difficulty === "advanced") {
+      messages[0].content += "\n\nThis student has experience. You can discuss more complex concepts and best practices.";
+    }
+    const response = await generateAIResponse(messages);
+    res.json({
+      response,
+      topic,
+      difficulty,
+      nextSteps: [
+        "Try building a small project",
+        "Practice with coding exercises",
+        "Ask follow-up questions",
+        "Share your progress"
+      ]
+    });
+  } catch (error) {
+    console.error("AI help error:", error);
+    res.status(500).json({
+      error: "Failed to generate help response",
+      fallback: "I'm having some technical difficulties. Don't worry - keep experimenting and learning! Your teacher can also help with this topic."
+    });
+  }
+});
 
 // server/storage.ts
 import { eq as eq4 } from "drizzle-orm";
@@ -748,15 +900,14 @@ var EnhancedDatabaseStorage = class {
   }
   // Course operations
   async getCourses(ageGroup, schoolId) {
-    let query = db.select().from(courses);
-    if (ageGroup) {
-      query = query.where(eq5(courses.ageGroup, ageGroup));
-    }
     if (schoolId) {
       const schoolCourses = await db.select().from(courses).leftJoin(users, eq5(courses.teacherId, users.id)).where(eq5(users.schoolId, schoolId));
       return schoolCourses.map((row) => row.courses);
     }
-    return await query;
+    if (ageGroup) {
+      return await db.select().from(courses).where(eq5(courses.ageGroup, ageGroup));
+    }
+    return await db.select().from(courses);
   }
   async getCourseById(id) {
     const [course] = await db.select().from(courses).where(eq5(courses.id, id));
@@ -1051,6 +1202,7 @@ async function registerRoutes(app2) {
   app2.use(cookieParser());
   app2.use("/api/auth", authRoutes_default);
   app2.use("/api", packageRoutes_default);
+  app2.use("/api", router3);
   app2.get("/api/users/:id", async (req, res) => {
     try {
       const user = await storage.getUser(req.params.id);

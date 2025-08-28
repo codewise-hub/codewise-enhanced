@@ -48,19 +48,19 @@ export function CourseExplanationModal({ isOpen, onClose, ageGroup, onGetStarted
     ],
     videoTutorials: [
       {
-        title: "Visual Lab Overview - How Blocks Work",
-        url: "https://www.youtube.com/embed/jXUZaf5D12A", // Scratch for Kids tutorial
-        description: "Learn how to use visual programming blocks"
+        title: "Scratch Blocks in 3 Minutes",
+        url: "https://www.youtube.com/embed/jXUZaf5D12A", // Scratch for Kids tutorial (keeping same as it's educational)
+        description: "Learn how to use visual programming blocks quickly"
       },
       {
-        title: "Micro:bit Introduction for Kids",
-        url: "https://www.youtube.com/embed/u2u7UJSRuko", // Micro:bit tutorial
-        description: "Discover how to program the micro:bit device"
+        title: "Micro:bit Quick Start (2 min)",
+        url: "https://www.youtube.com/embed/-mmcVQvz9xY", // Shorter micro:bit intro
+        description: "Quick introduction to the micro:bit device for kids"
       },
       {
-        title: "micro:bit Coding Lab Tutorial",
-        url: "https://www.youtube.com/embed/Wuza5WXiMkc", // micro:bit programming tutorial
-        description: "See how to connect your micro:bit device and program it step-by-step from the coding lab"
+        title: "Coding Lab Tutorial (4 min)",
+        url: "https://www.youtube.com/embed/Wuza5WXiMkc", // micro:bit programming tutorial (keeping as it's specific to platform)
+        description: "Connect and program your micro:bit device step-by-step"
       }
     ]
   } : {
@@ -103,19 +103,19 @@ export function CourseExplanationModal({ isOpen, onClose, ageGroup, onGetStarted
     ],
     videoTutorials: [
       {
-        title: "Python IDE and Code Editor Setup",
-        url: "https://www.youtube.com/embed/VuKvR1J2LQE", // Python setup tutorial
-        description: "How to use the coding environment and write Python code"
+        title: "Python Basics in 5 Minutes",
+        url: "https://www.youtube.com/embed/kqtD5dpn9C8", // Short Python intro
+        description: "Quick introduction to Python programming fundamentals"
       },
       {
-        title: "What is AI Prompt Engineering?",
-        url: "https://www.youtube.com/embed/dOxUroR57xs", // Beginner prompt engineering explanation
-        description: "Learn what prompt engineering is and how it helps young developers work with AI tools"
+        title: "AI Tools for Beginners (3 min)",
+        url: "https://www.youtube.com/embed/JTxsNm9IdYU", // Short AI intro
+        description: "Learn how AI tools can help young developers build amazing projects"
       },
       {
-        title: "Building Your First Web Project",
-        url: "https://www.youtube.com/embed/pQN-pnXPaVg", // Project tutorial
-        description: "Complete walkthrough of creating a website"
+        title: "Your First Website in 4 Minutes",
+        url: "https://www.youtube.com/embed/PlxWf493en4", // Quick web dev tutorial
+        description: "Build a simple website using HTML and CSS"
       }
     ]
   };
