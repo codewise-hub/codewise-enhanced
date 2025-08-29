@@ -45,7 +45,7 @@ try {
 export async function executeSQL(query: string, params: any[] = []) {
   try {
     console.log('Executing SQL:', query.substring(0, 100) + (query.length > 100 ? '...' : ''));
-    const result = await db.execute(sql.raw(query, ...params));
+    const result = await db.execute(sql.raw(query));
     console.log('SQL execution successful');
     return result;
   } catch (error) {
