@@ -1,9 +1,35 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 
+// FIXED: Added proper typing to prevent property errors
+interface HealthInfo {
+  status: string;
+  timestamp: string;
+  method?: string;
+  environment: {
+    NODE_ENV?: string;
+    DATABASE_URL_EXISTS: boolean;
+    JWT_SECRET_EXISTS: boolean;
+  };
+  deployment: {
+    region: string;
+    commit: string;
+  };
+  endpoints: {
+    signup: string;
+    debug_database: string;
+  };
+  message: string;
+  modules?: {
+    db: boolean;
+    database_connection: string;
+    error?: string;
+  };
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
-    // Basic health check with deployment info
-    const healthInfo = {
+    // Basic health check with deployment info (FIXED: proper typing)
+    const healthInfo: HealthInfo = {
       status: 'ok',
       timestamp: new Date().toISOString(),
       method: req.method,
@@ -18,9 +44,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       },
       endpoints: {
         signup: '/api/auth/signup',
-        signup_simple: '/api/auth/signup-simple',
         debug_database: '/api/debug/database',
-        debug_setup_schema: '/api/debug/setup-schema'
       },
       message: 'Codewise Enhanced API is running'
     };
