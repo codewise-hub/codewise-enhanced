@@ -309,12 +309,32 @@ var insertAchievementSchema = createInsertSchema(achievements).omit({
 // server/db.ts
 neonConfig.webSocketConstructor = ws;
 if (!process.env.DATABASE_URL) {
+  console.error("DATABASE_URL environment variable is missing");
+  console.error("Please set DATABASE_URL in your environment or .env file");
   throw new Error(
     "DATABASE_URL must be set. Did you forget to provision a database?"
   );
 }
-var pool = new Pool({ connectionString: process.env.DATABASE_URL });
-var db = drizzle({ client: pool, schema: schema_exports });
+var dbUrl = process.env.DATABASE_URL;
+var maskedUrl = dbUrl.replace(/:\/\/([^:]+):([^@]+)@/, "://***:***@");
+console.log(`Attempting to connect to database: ${maskedUrl}`);
+var pool;
+var db;
+try {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    // Add connection timeout and retry options for better error handling
+    connectionTimeoutMillis: 1e4,
+    // 10 second timeout
+    idleTimeoutMillis: 3e4
+    // 30 second idle timeout
+  });
+  db = drizzle({ client: pool, schema: schema_exports });
+  console.log("Database connection pool created successfully");
+} catch (error) {
+  console.error("Failed to create database connection pool:", error);
+  throw error;
+}
 
 // server/auth.ts
 import bcrypt from "bcryptjs";
@@ -425,17 +445,43 @@ async function createUser(userData) {
   return parentUser;
 }
 async function signInUser(email, password, userAgent, ipAddress) {
-  const userResult = await db.select().from(users).where(eq(users.email, email)).limit(1);
-  if (userResult.length === 0) {
-    return null;
+  try {
+    console.log(`Attempting to find user with email: ${email}`);
+    const userResult = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    if (userResult.length === 0) {
+      console.log(`No user found with email: ${email}`);
+      return null;
+    }
+    const user = userResult[0];
+    console.log(`User found: ${user.id}, checking password`);
+    if (!user.passwordHash) {
+      console.log(`No password hash for user: ${user.id}`);
+      return null;
+    }
+    const passwordValid = await verifyPassword(password, user.passwordHash);
+    if (!passwordValid) {
+      console.log(`Invalid password for user: ${user.id}`);
+      return null;
+    }
+    console.log(`Password verified for user: ${user.id}`);
+    if (!user.isActive) {
+      console.log(`User account is inactive: ${user.id}`);
+      return null;
+    }
+    try {
+      await db.update(users).set({ lastLoginAt: /* @__PURE__ */ new Date() }).where(eq(users.id, user.id));
+      console.log(`Updated last login for user: ${user.id}`);
+    } catch (updateError) {
+      console.error(`Failed to update last login for user ${user.id}:`, updateError);
+    }
+    console.log(`Creating session for user: ${user.id}`);
+    const sessionToken = await createUserSession(user.id, userAgent, ipAddress);
+    console.log(`Session created successfully for user: ${user.id}`);
+    return { user, sessionToken };
+  } catch (error) {
+    console.error("Error in signInUser function:", error);
+    throw error;
   }
-  const user = userResult[0];
-  if (!user.passwordHash || !await verifyPassword(password, user.passwordHash)) {
-    return null;
-  }
-  await db.update(users).set({ lastLoginAt: /* @__PURE__ */ new Date() }).where(eq(users.id, user.id));
-  const sessionToken = await createUserSession(user.id, userAgent, ipAddress);
-  return { user, sessionToken };
 }
 async function signOutUser(sessionToken) {
   await revokeSession(sessionToken);
