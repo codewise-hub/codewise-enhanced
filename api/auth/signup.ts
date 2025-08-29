@@ -1,26 +1,9 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { z } from 'zod';
 import { eq } from 'drizzle-orm';
-
-// Import with error handling
-let db: any;
-let users: any;
-let createUser: any;
-let createUserSession: any;
-
-try {
-  const dbModule = require('../_lib/db');
-  db = dbModule.db;
-  
-  const schemaModule = require('../../shared/schema');
-  users = schemaModule.users;
-  
-  const authModule = require('../_lib/auth');
-  createUser = authModule.createUser;
-  createUserSession = authModule.createUserSession;
-} catch (importError: any) {
-  console.error('Import error in signup:', importError);
-}
+import { db } from '../_lib/db';
+import { users } from '../../shared/schema';
+import { createUser, createUserSession } from '../_lib/auth';
 
 const signUpSchema = z.object({
   email: z.string().email(),
@@ -55,16 +38,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     console.log('=== SIGNUP ATTEMPT START ===');
     
-    // Step 1: Check imports
-    if (!db || !users || !createUser || !createUserSession) {
-      console.error('Missing imports:', { db: !!db, users: !!users, createUser: !!createUser, createUserSession: !!createUserSession });
-      return res.status(500).json({ 
-        error: 'Module import failed',
-        step: 'imports'
-      });
-    }
-
-    // Step 2: Check environment variables
+    // Step 1: Check environment variables
     if (!process.env.DATABASE_URL) {
       console.error('Missing DATABASE_URL environment variable');
       return res.status(500).json({ 
@@ -83,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     console.log('Environment check passed');
 
-    // Step 3: Validate request body
+    // Step 2: Validate request body
     if (!req.body) {
       return res.status(400).json({ 
         error: 'Request body is required',
@@ -98,7 +72,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       bodyKeys: Object.keys(req.body || {})
     });
 
-    // Step 4: Validate with Zod
+    // Step 3: Validate with Zod
     let data;
     try {
       data = signUpSchema.parse(req.body);
@@ -112,7 +86,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
     
-    // Step 5: Test database connection
+    // Step 4: Test database connection
     console.log('Testing database connection...');
     try {
       const testResult = await db.select().from(users).limit(1);
@@ -126,7 +100,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // Step 6: Check if user already exists
+    // Step 5: Check if user already exists
     console.log(`Checking if user exists: ${data.email}`);
     let existingUser;
     try {
@@ -153,7 +127,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // Step 7: Create user
+    // Step 6: Create user
     console.log(`Creating new user: ${data.email}`);
     let user;
     try {
@@ -168,7 +142,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
     
-    // Step 8: Create session
+    // Step 7: Create session
     console.log(`Creating session for user: ${user.id}`);
     let sessionToken;
     try {
