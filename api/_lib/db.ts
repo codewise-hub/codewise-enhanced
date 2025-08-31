@@ -41,11 +41,12 @@ try {
   throw error;
 }
 
-// Helper function for raw SQL execution
-export async function executeSQL(query: string, params: any[] = []) {
+// Helper function for raw SQL execution (FIXED - removed spread operator)
+export async function executeSQL(query: string) {
   try {
     console.log('Executing SQL:', query.substring(0, 100) + (query.length > 100 ? '...' : ''));
-    const result = await db.execute(sql.raw(query, ...params));
+    // FIXED: Remove spread operator that was causing TypeScript error
+    const result = await db.execute(sql.raw(query));
     console.log('SQL execution successful');
     return result;
   } catch (error) {
